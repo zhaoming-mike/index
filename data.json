@@ -1,0 +1,14 @@
+[
+  {
+    "name": "GitHub",
+    "url": "https://github.com",
+    "icon": "🐙",
+    "description": "代码托管与协作平台"
+  },
+  {
+    "name": "Gmail",
+    "url": "https://mail.google.com",
+    "icon": "📧",
+    "description": "电子邮件"
+  }
+]
