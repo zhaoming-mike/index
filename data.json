@@ -1,14 +1,68 @@
 [
   {
-    "name": "GitHub",
-    "url": "https://github.com",
-    "icon": "🐙",
-    "description": "代码托管与协作平台"
+    "name": "WoT 亚服官网",
+    "url": "https://worldoftanks.asia/",
+    "icon": "🎮",
+    "description": "坦克世界亚洲服官方网站"
   },
   {
-    "name": "Gmail",
-    "url": "https://mail.google.com",
-    "icon": "📧",
-    "description": "电子邮件"
+    "name": "开发者平台",
+    "url": "https://developers.wargaming.net/",
+    "icon": "🔧",
+    "description": "Wargaming API 开发者门户，注册应用获取 API Key"
+  },
+  {
+    "name": "Tomato.gg",
+    "url": "https://tomato.gg/",
+    "icon": "🍅",
+    "description": "玩家战绩查询，WN8 评级，session 追踪"
+  },
+  {
+    "name": "WoT-Life",
+    "url": "https://wot-life.com/",
+    "icon": "📊",
+    "description": "玩家数据追踪，战绩变化曲线图"
+  },
+  {
+    "name": "NoobMeter",
+    "url": "https://www.noobmeter.com/",
+    "icon": "📈",
+    "description": "玩家战绩查询与胜率统计"
+  },
+  {
+    "name": "Tanks.gg",
+    "url": "https://tanks.gg/",
+    "icon": "🛡️",
+    "description": "坦克数据对比，装甲模型，配装推荐"
+  },
+  {
+    "name": "Armor Inspector",
+    "url": "https://armor.wotinspector.com/",
+    "icon": "🔍",
+    "description": "3D 装甲检视，弱点分析，模块查看"
+  },
+  {
+    "name": "Skill4ltu Index",
+    "url": "https://skill4ltu.eu/",
+    "icon": "⭐",
+    "description": "Skill 坦克配装指南，配件/技能推荐"
+  },
+  {
+    "name": "WoT Replays",
+    "url": "https://wotreplays.eu/",
+    "icon": "🎬",
+    "description": "回放录像分享与下载"
+  },
+  {
+    "name": "亚服贴吧",
+    "url": "https://tieba.baidu.com/f?kw=%E5%9D%A6%E5%85%8B%E4%B8%96%E7%95%8C%E4%BA%9A%E6%9C%8D",
+    "icon": "💬",
+    "description": "坦克世界亚服百度贴吧中文社区"
+  },
+  {
+    "name": "ProTanki",
+    "url": "https://protanki.tv/",
+    "icon": "🎯",
+    "description": "俄服 WoT 模组站，插件、瞄准、皮肤资源"
   }
 ]
