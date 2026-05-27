@@ -6,11 +6,7 @@
 <link rel="icon" type="image/x-icon" href="/index/favicon.ico">
 <title>index</title>
 <style>
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
@@ -19,88 +15,125 @@ body {
   line-height: 1.5;
 }
 
-.container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 24px 16px;
-}
+.container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
 
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-}
+/* 顶部工具栏 */
+.toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.toolbar .count { font-size: 13px; color: #999; margin-right: auto; }
+.btn { padding: 6px 14px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; font-size: 13px; font-family: inherit; transition: border-color 0.2s, background 0.2s; }
+.btn:hover { border-color: #4a90d9; background: #eef5fd; }
 
+/* 卡片网格 */
+.card-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 120px; gap: 12px; }
+
+/* 卡片容器 */
+.card-item { position: relative; border-radius: 10px; height: 120px; min-width: 0; cursor: grab; transition: opacity 0.8s ease, transform 0.8s ease; }
+.card-item:active { cursor: grabbing; }
+.card-item.dragging { opacity: 0.3; }
+.card-item.dragging .card { background: #ccc; box-shadow: none; }
+.card-item.drag-over { outline: 2px dashed #4a90d9; outline-offset: 2px; border-radius: 10px; background: rgba(74,144,217,0.06); }
+
+/* 删除动画 */
+.card-item.deleting { opacity: 0; transform: scale(0.8); pointer-events: none; }
+
+/* 操作按钮栏 */
+.card-actions { position: absolute; top: 4px; right: 4px; display: flex; gap: 2px; z-index: 2; opacity: 0; transition: opacity 0.15s; }
+.card-item:hover .card-actions { opacity: 1; }
+
+.card-actions button {
+  width: 22px; height: 22px; border: none; border-radius: 4px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; line-height: 1; background: rgba(0,0,0,0.06); color: #888;
+  transition: background 0.15s, color 0.15s;
+}
+.card-actions button:hover { background: rgba(0,0,0,0.15); color: #333; }
+
+/* 卡片 */
 .card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px 12px;
-  background: #fff;
-  border-radius: 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 16px 10px; background: #fff; border-radius: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-  min-height: 100px;
-  text-decoration: none;
-  color: #333;
+  width: 100%; height: 100%; overflow: hidden;
+  text-decoration: none; color: #333;
   transition: transform 0.2s, box-shadow 0.2s;
 }
+.card-item:hover .card { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
 
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
+.card-icon { font-size: 28px; margin-bottom: 6px; line-height: 1; }
+.card-icon img { width: 20px; height: 20px; display: block; }
+.card-name { font-size: 13px; font-weight: 500; line-height: 1.3; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+.card-desc { font-size: 11px; color: #999; margin-top: 2px; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
 
-.card-icon {
-  font-size: 28px;
-  margin-bottom: 8px;
-  line-height: 1;
+/* 新增卡片 */
+.add-card-item { height: 120px; cursor: default; }
+.add-card {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 100%; height: 100%; border: 2px dashed #ccc; border-radius: 10px;
+  background: transparent; cursor: pointer; font-family: inherit; color: #999;
+  font-size: 13px; transition: border-color 0.2s, color 0.2s, background 0.2s;
 }
+.add-card:hover { border-color: #4a90d9; color: #4a90d9; background: rgba(74,144,217,0.04); }
+.add-card .plus { font-size: 32px; line-height: 1; margin-bottom: 4px; }
 
-.card-icon img {
-  width: 20px;
-  height: 20px;
-  display: block;
+/* 弹窗 */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 100; display: flex; align-items: center; justify-content: center; }
+.modal {
+  background: #fff; border-radius: 10px; padding: 24px; width: 380px; max-width: 90vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
 }
+.modal h3 { font-size: 16px; margin-bottom: 16px; }
+.modal label { display: block; font-size: 12px; color: #888; margin-bottom: 4px; margin-top: 12px; }
+.modal label:first-of-type { margin-top: 0; }
+.modal input, .modal textarea {
+  width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px;
+  font-size: 13px; font-family: inherit; outline: none; transition: border-color 0.2s;
+}
+.modal input:focus, .modal textarea:focus { border-color: #4a90d9; }
+.modal textarea { height: 48px; resize: vertical; }
+.modal .modal-btns { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+.modal .modal-btns button {
+  padding: 6px 16px; border-radius: 6px; font-size: 13px; font-family: inherit; cursor: pointer; border: none;
+}
+.modal .btn-save { background: #4a90d9; color: #fff; }
+.modal .btn-save:hover { background: #3a7bc8; }
+.modal .btn-cancel { background: #eee; color: #666; }
+.modal .btn-cancel:hover { background: #ddd; }
 
-.card-name {
-  font-size: 14px;
-  font-weight: 500;
-  text-align: center;
-  word-break: break-all;
+/* toast */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  padding: 8px 20px; background: #333; color: #fff; border-radius: 6px;
+  font-size: 13px; z-index: 999; pointer-events: none; opacity: 0;
+  transition: opacity 0.2s;
 }
-
-.card-desc {
-  font-size: 12px;
-  color: #999;
-  margin-top: 4px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 100%;
-}
+.toast.show { opacity: 1; }
 
 @media (max-width: 768px) {
-  .card-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .card-grid { grid-template-columns: repeat(2, 1fr); }
+  .card-actions { opacity: 1; }
 }
 
 @media (max-width: 400px) {
-  .card-grid {
-    grid-template-columns: 1fr;
-  }
+  .card-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 <div class="container">
+  <div class="toolbar">
+    <span class="count" id="count"></span>
+    <button class="btn" id="btnImport" title="从 JSON 文件导入链接">导入 JSON</button>
+    <button class="btn" id="btnExport" title="导出当前链接为 JSON 文件">导出 JSON</button>
+  </div>
   <div class="card-grid" id="cardGrid"></div>
+  <div class="toast" id="toast"></div>
 </div>
 
 <script>
 (async function () {
   const gridEl = document.getElementById('cardGrid');
+  const countEl = document.getElementById('count');
+  const toastEl = document.getElementById('toast');
 
   let links;
   try {
@@ -112,6 +145,9 @@ body {
     console.error('data.json 加载失败:', err);
     return;
   }
+
+  let dragIdx = -1;
+  let didDrag = false;
 
   function escAttr(str) {
     return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -132,15 +168,256 @@ body {
     }
   }
 
-  gridEl.innerHTML = links.map(link => {
-    const iconHtml = renderIcon(link);
-    const descHtml = link.description ? `<span class="card-desc">${escAttr(link.description)}</span>` : '';
-    return `<a href="${link.url}" target="_blank" rel="noopener" class="card">
-      <span class="card-icon">${iconHtml}</span>
-      <span class="card-name">${escAttr(link.name)}</span>
-      ${descHtml}
-    </a>`;
-  }).join('');
+  function showToast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    setTimeout(() => toastEl.classList.remove('show'), 1500);
+  }
+
+  function render() {
+    countEl.textContent = `${links.length} 个链接`;
+
+    var html = `<div class="card-item add-card-item"><button class="add-card" id="btnAdd"><span class="plus">+</span>新建卡片</button></div>`;
+
+    html += links.map((link, i) => {
+      const iconHtml = renderIcon(link);
+      const descHtml = link.description ? `<span class="card-desc">${escAttr(link.description)}</span>` : '';
+      return `<div class="card-item" draggable="true" data-index="${i}">
+        <div class="card-actions">
+          <button title="编辑" data-action="edit" data-index="${i}">✎</button>
+          <button title="复制卡片" data-action="copy" data-index="${i}">📋</button>
+          <button title="删除" data-action="delete" data-index="${i}">✕</button>
+        </div>
+        <a href="${link.url}" target="_blank" rel="noopener" class="card">
+          <span class="card-icon">${iconHtml}</span>
+          <span class="card-name">${escAttr(link.name)}</span>
+          ${descHtml}
+        </a>
+      </div>`;
+    }).join('');
+
+    gridEl.innerHTML = html;
+  }
+
+  render();
+
+  /* 随机数据生成 */
+  function faviconUrl(url) {
+    try { return 'https://' + new URL(url).hostname + '/favicon.ico'; } catch { return ''; }
+  }
+
+  function randomUrl() {
+    const hosts = ['https://example.com','https://github.com','https://docs.google.com','https://notion.so','https://figma.com','https://trello.com','https://vercel.com'];
+    return hosts[Math.floor(Math.random() * hosts.length)];
+  }
+
+  function randomName() {
+    const names = ['新工具','参考文档','常用站点','项目主页','在线工具','资源合集','学习资料','开发文档','设计素材','快捷入口'];
+    return names[Math.floor(Math.random() * names.length)];
+  }
+
+  function randomDesc() {
+    const descs = ['实用的在线服务','日常开发必备','收藏的资源页面','工作效率工具','技术学习平台','设计灵感来源','团队协作平台'];
+    return descs[Math.floor(Math.random() * descs.length)];
+  }
+
+  /* 弹窗 */
+  function openModal(data, onSave) {
+    const existing = document.querySelector('.modal-overlay');
+    if (existing) existing.remove();
+
+    var defName = data ? data.name : randomName();
+    var defUrl = data ? data.url : randomUrl();
+    var defIcon = data ? data.icon : faviconUrl(defUrl);
+    var defDesc = data ? data.description || '' : randomDesc();
+
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML = `<div class="modal">
+      <h3>${data ? '编辑卡片' : '新建卡片'}</h3>
+      <label>名称</label>
+      <input id="fName" value="${escAttr(defName)}">
+      <label>URL</label>
+      <input id="fUrl" value="${escAttr(defUrl)}">
+      <label>图标</label>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input id="fIcon" value="${escAttr(defIcon)}" style="flex:1" placeholder="emoji 或图片URL，留空自动获取网站图标">
+        <span id="iconPreview" style="font-size:24px;line-height:1;min-width:28px;text-align:center;"></span>
+      </div>
+      <label>描述</label>
+      <textarea id="fDesc" placeholder="可选描述">${escAttr(defDesc)}</textarea>
+      <div class="modal-btns">
+        <button class="btn-cancel">取消</button>
+        <button class="btn-save">保存</button>
+      </div>
+    </div>`;
+
+    overlay.querySelector('.btn-cancel').onclick = () => overlay.remove();
+    overlay.querySelector('.btn-save').onclick = () => {
+      const obj = {
+        name: document.getElementById('fName').value.trim(),
+        url: document.getElementById('fUrl').value.trim(),
+        icon: document.getElementById('fIcon').value.trim(),
+        description: document.getElementById('fDesc').value.trim()
+      };
+      if (!obj.name || !obj.url) { showToast('名称和 URL 不能为空'); return; }
+      overlay.remove();
+      onSave(obj);
+    };
+    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+    document.body.appendChild(overlay);
+    document.getElementById('fName').focus();
+
+    /* 图标实时预览 */
+    var fIcon = document.getElementById('fIcon');
+    var iconPreview = document.getElementById('iconPreview');
+    function updatePreview() {
+      var v = fIcon.value.trim();
+      if (!v) { iconPreview.innerHTML = ''; return; }
+      if (/^https?:\/\//.test(v)) {
+        iconPreview.innerHTML = '<img src="' + v + '" style="width:24px;height:24px;display:block" onerror="this.style.display=\'none\'">';
+      } else {
+        iconPreview.textContent = v;
+      }
+    }
+    fIcon.addEventListener('input', updatePreview);
+    updatePreview();
+  }
+
+  /* 新增卡片按钮 */
+  gridEl.addEventListener('click', e => {
+    if (e.target.closest('#btnAdd')) {
+      openModal(null, obj => {
+        links.push(obj);
+        render();
+        showToast('已添加卡片');
+      });
+      return;
+    }
+  });
+
+  /* 拖动排序 */
+  gridEl.addEventListener('dragstart', e => {
+    const item = e.target.closest('.card-item:not(.add-card-item)');
+    if (!item) return;
+    dragIdx = parseInt(item.dataset.index);
+    item.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    const ghost = item.cloneNode(true);
+    ghost.style.position = 'absolute'; ghost.style.top = '-9999px'; ghost.style.left = '0';
+    ghost.style.width = item.offsetWidth + 'px'; ghost.style.height = item.offsetHeight + 'px';
+    ghost.style.opacity = '0.85';
+    ghost.classList.remove('dragging', 'drag-over');
+    document.body.appendChild(ghost);
+    e.dataTransfer.setDragImage(ghost, item.offsetWidth / 2, item.offsetHeight / 2);
+    requestAnimationFrame(() => ghost.remove());
+  });
+
+  gridEl.addEventListener('dragend', e => {
+    const item = e.target.closest('.card-item');
+    if (item) item.classList.remove('dragging');
+    document.querySelectorAll('.card-item.drag-over').forEach(el => el.classList.remove('drag-over'));
+    dragIdx = -1;
+  });
+
+  gridEl.addEventListener('dragover', e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    const item = e.target.closest('.card-item:not(.add-card-item)');
+    if (!item || dragIdx === -1) return;
+    const overIdx = parseInt(item.dataset.index);
+    if (overIdx !== dragIdx) {
+      document.querySelectorAll('.card-item.drag-over').forEach(el => el.classList.remove('drag-over'));
+      item.classList.add('drag-over');
+    }
+  });
+
+  gridEl.addEventListener('drop', e => {
+    e.preventDefault();
+    const item = e.target.closest('.card-item:not(.add-card-item)');
+    if (!item || dragIdx === -1) return;
+    const toIdx = parseInt(item.dataset.index);
+    if (toIdx === dragIdx) return;
+    const [moved] = links.splice(dragIdx, 1);
+    links.splice(toIdx, 0, moved);
+    didDrag = true;
+    dragIdx = -1;
+    render();
+  });
+
+  /* 点击操作按钮 */
+  gridEl.addEventListener('click', e => {
+    if (didDrag) { e.preventDefault(); didDrag = false; return; }
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    e.preventDefault();
+    const action = btn.dataset.action;
+    const i = parseInt(btn.dataset.index);
+
+    if (action === 'edit') {
+      openModal(links[i], obj => {
+        links[i] = obj;
+        render();
+        showToast('已更新卡片');
+      });
+    }
+
+    if (action === 'delete') {
+      var item = btn.closest('.card-item');
+      item.classList.add('deleting');
+      function onEnd(e) {
+        if (e.target !== item || e.propertyName !== 'opacity') return;
+        item.removeEventListener('transitionend', onEnd);
+        links.splice(i, 1);
+        render();
+        showToast('已删除');
+      }
+      item.addEventListener('transitionend', onEnd);
+    }
+
+    if (action === 'copy') {
+      const clone = JSON.parse(JSON.stringify(links[i]));
+      clone.name += ' (副本)';
+      links.splice(i + 1, 0, clone);
+      render();
+      showToast('已复制卡片');
+    }
+  });
+
+  /* 导入 JSON */
+  document.getElementById('btnImport').addEventListener('click', () => {
+    var input = document.createElement('input');
+    input.type = 'file'; input.accept = '.json';
+    input.onchange = function () {
+      var file = this.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        try {
+          var arr = JSON.parse(reader.result);
+          if (!Array.isArray(arr)) throw new Error('JSON 必须是数组格式');
+          links = arr;
+          render();
+          showToast('已导入 ' + links.length + ' 个链接');
+        } catch (e) {
+          showToast('导入失败：' + e.message);
+        }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
+  });
+
+  /* 导出 JSON */
+  document.getElementById('btnExport').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(links, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'data.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    showToast('已导出 data.json');
+  });
 })();
 </script>
 </body>
