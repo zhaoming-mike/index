@@ -18,18 +18,6 @@
     "description": "玩家战绩查询，WN8 评级，session 追踪"
   },
   {
-    "name": "WoT-Life",
-    "url": "https://wot-life.com/",
-    "icon": "📊",
-    "description": "玩家数据追踪，战绩变化曲线图"
-  },
-  {
-    "name": "NoobMeter",
-    "url": "https://www.noobmeter.com/",
-    "icon": "📈",
-    "description": "玩家战绩查询与胜率统计"
-  },
-  {
     "name": "Tanks.gg",
     "url": "https://tanks.gg/",
     "icon": "🛡️",
