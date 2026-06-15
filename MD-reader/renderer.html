@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown HTML Renderer</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js"></script>
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --text: #333;
+      --toolbar-bg: rgba(255,255,255,0.92);
+      --toolbar-border: #e0e0e0;
+      --toolbar-shadow: rgba(0,0,0,0.04);
+      --btn-bg: #fff;
+      --btn-border: #d0d7de;
+      --btn-text: #555;
+      --btn-hover: #f0f0f0;
+      --picker-bg1: #fafbfc;
+      --picker-bg2: #f6f8fa;
+      --picker-border: #d0d7de;
+      --picker-text: #656d76;
+      --picker-title: #24292f;
+      --picker-hover-bg1: #f0f7ff;
+      --picker-hover-bg2: #e8f2fd;
+      --h1-border: #ddd;
+      --h2-border: #eee;
+      --code-bg: #e8e8e8;
+      --pre-bg: #2d2d2d;
+      --pre-text: #f8f8f2;
+      --table-border: #ddd;
+      --table-th-bg: #f0f0f0;
+      --quote-bg: #f0f0f0;
+      --quote-border: #ccc;
+      --quote-text: #666;
+      --hr: #ddd;
+      --link: #0969da;
+      --kbd-bg: #eee;
+      --kbd-border: #ccc;
+      --del: #999;
+      --footnote-text: #666;
+      --mark-bg: #fff3b0;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0d1117;
+      --text: #c9d1d9;
+      --toolbar-bg: rgba(13,17,23,0.92);
+      --toolbar-border: #30363d;
+      --toolbar-shadow: rgba(0,0,0,0.3);
+      --btn-bg: #21262d;
+      --btn-border: #30363d;
+      --btn-text: #c9d1d9;
+      --btn-hover: #30363d;
+      --picker-bg1: #161b22;
+      --picker-bg2: #0d1117;
+      --picker-border: #30363d;
+      --picker-text: #8b949e;
+      --picker-title: #c9d1d9;
+      --picker-hover-bg1: #1c2533;
+      --picker-hover-bg2: #121d2e;
+      --h1-border: #30363d;
+      --h2-border: #21262d;
+      --code-bg: #343941;
+      --pre-bg: #161b22;
+      --pre-text: #c9d1d9;
+      --table-border: #30363d;
+      --table-th-bg: #21262d;
+      --quote-bg: #161b22;
+      --quote-border: #30363d;
+      --quote-text: #8b949e;
+      --hr: #30363d;
+      --link: #58a6ff;
+      --kbd-bg: #21262d;
+      --kbd-border: #30363d;
+      --del: #8b949e;
+      --footnote-text: #8b949e;
+      --mark-bg: #bb800926;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scrollbar-width: none; }
+    html::-webkit-scrollbar { display: none; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding-top: 52px; }
+    .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+
+    .picker-area { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 20px; border: 2px dashed var(--picker-border); border-radius: 12px; background: linear-gradient(135deg, var(--picker-bg1) 0%, var(--picker-bg2) 100%); cursor: pointer; transition: border-color .25s, background .25s, box-shadow .25s, transform .15s; }
+    .picker-area:hover { border-color: var(--text); background: linear-gradient(135deg, var(--picker-hover-bg1) 0%, var(--picker-hover-bg2) 100%); box-shadow: 0 0 0 4px rgba(128,128,128,0.1); transform: translateY(-1px); }
+    .picker-area p { margin: 4px 0; color: var(--picker-text); user-select: none; }
+    .picker-area p:first-of-type { font-size: 1rem; font-weight: 500; color: var(--picker-title); margin-top: 16px; }
+    .picker-area p:last-of-type { font-size: 0.8rem; }
+    #picker input[type="file"] { display: none; }
+    .picker-icon { width: 48px; height: 48px; color: var(--picker-text); transition: color .25s; }
+    .picker-area:hover .picker-icon { color: var(--text); }
+
+    .toolbar { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 100; justify-content: space-between; align-items: center; padding: 10px 24px; background: var(--toolbar-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--toolbar-border); box-shadow: 0 1px 4px var(--toolbar-shadow); }
+    .toolbar .filename { font-weight: 600; color: var(--text); }
+    .toolbar .toolbar-actions { display: flex; gap: 8px; align-items: center; }
+    .toolbar button { padding: 5px 14px; border: 1px solid var(--btn-border); border-radius: 6px; background: var(--btn-bg); cursor: pointer; font-size: 0.85rem; color: var(--btn-text); transition: background .15s; }
+    .toolbar button:hover { background: var(--btn-hover); }
+    .toolbar button.home-btn:hover { background: var(--btn-hover); }
+    .toolbar button.theme-btn { width: 34px; height: 34px; padding: 0; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+    .toolbar button.theme-btn svg { width: 18px; height: 18px; }
+    .toolbar button.theme-btn .icon-moon { display: none; }
+    [data-theme="light"] .toolbar button.theme-btn .icon-sun { display: none; }
+    [data-theme="light"] .toolbar button.theme-btn .icon-moon { display: block; }
+
+    #content { display: none; }
+    #content h1 { border-bottom: 2px solid var(--h1-border); padding-bottom: 8px; margin: 24px 0 16px; }
+    #content h2 { border-bottom: 1px solid var(--h2-border); padding-bottom: 6px; margin: 20px 0 12px; }
+    #content h3, #content h4, #content h5, #content h6 { margin: 16px 0 8px; }
+    #content p { margin: 8px 0; line-height: 1.7; }
+    #content blockquote { border-left: 4px solid var(--quote-border); padding: 4px 16px; margin: 12px 0; color: var(--quote-text); background: var(--quote-bg); }
+    #content ul, #content ol { padding-left: 24px; margin: 8px 0; }
+    #content li { margin: 4px 0; line-height: 1.6; }
+    #content code { background: var(--code-bg); padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+    #content pre { background: var(--pre-bg); color: var(--pre-text); padding: 16px; border-radius: 6px; overflow-x: auto; margin: 12px 0; }
+    #content pre code { background: none; padding: 0; color: inherit; }
+    #content table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+    #content th, #content td { border: 1px solid var(--table-border); padding: 8px 12px; text-align: left; }
+    #content th { background: var(--table-th-bg); font-weight: 600; }
+    #content hr { border: none; border-top: 1px solid var(--hr); margin: 24px 0; }
+    #content a { color: var(--link); text-decoration: none; }
+    #content a:hover { text-decoration: underline; }
+    #content img { max-width: 100%; }
+    #content del { color: var(--del); }
+    #content mark { background: var(--mark-bg); padding: 1px 4px; color: var(--text); }
+    #content kbd { background: var(--kbd-bg); border: 1px solid var(--kbd-border); border-radius: 3px; padding: 1px 5px; font-size: 0.85em; }
+    #content dt { font-weight: 600; margin-top: 8px; }
+    #content dd { margin-left: 24px; color: var(--quote-text); }
+    #content details { margin: 8px 0; }
+    #content summary { cursor: pointer; padding: 4px 0; }
+    #content .task-list-item { list-style: none; margin-left: -24px; }
+    #content .task-list-item input { margin-right: 8px; }
+    #content .footnotes { border-top: 1px solid var(--hr); margin-top: 24px; padding-top: 12px; font-size: 0.9em; color: var(--footnote-text); }
+    .error { color: #c00; text-align: center; padding: 40px; }
+
+    .back-to-top { position: fixed; right: 24px; bottom: 24px; z-index: 99; width: 40px; height: 40px; border: 1px solid var(--btn-border); border-radius: 50%; background: var(--btn-bg); cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s, transform .15s; box-shadow: 0 1px 6px var(--toolbar-shadow); }
+    .back-to-top.visible { opacity: 1; visibility: visible; }
+    .back-to-top:hover { transform: translateY(-2px); }
+    .back-to-top svg { width: 20px; height: 20px; color: var(--btn-text); }
+  </style>
+</head>
+<body>
+  <div class="toolbar" id="toolbar">
+    <span class="filename" id="filename"></span>
+    <div class="toolbar-actions">
+      <button class="theme-btn" onclick="toggleTheme()" title="切换模式">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="home-btn" onclick="location.href='index.html'">回首页</button>
+      <button onclick="location.reload()">重新选择</button>
+    </div>
+  </div>
+  <div class="container">
+    <div id="picker">
+      <label class="picker-area" for="fileInput">
+        <svg class="picker-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+        <p>选择 .md 文件</p>
+        <p>支持 GitHub Flavored Markdown</p>
+      </label>
+      <input type="file" id="fileInput" accept=".md">
+    </div>
+    <div id="content"></div>
+  </div>
+
+  <button class="back-to-top" id="backToTop" title="返回顶部">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+
+  <script>
+    const picker = document.getElementById('picker');
+    const toolbar = document.getElementById('toolbar');
+    const filename = document.getElementById('filename');
+    const content = document.getElementById('content');
+    const fileInput = document.getElementById('fileInput');
+    const html = document.documentElement;
+
+    const emojiMap = {};
+    fetch('https://cdn.jsdelivr.net/npm/emojilib@2.4.0/emojis.json')
+      .then(r => r.json())
+      .then(data => { for (const [name, obj] of Object.entries(data)) { emojiMap[':' + name + ':'] = obj.char; } })
+      .catch(() => {});
+    function expandEmoji(text) {
+      return text.replace(/:[\w+-]+:/g, m => emojiMap[m] || m);
+    }
+
+    function setTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      localStorage.setItem('md-theme', theme);
+    }
+
+    function toggleTheme() {
+      setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    }
+
+    (function() {
+      const saved = localStorage.getItem('md-theme');
+      if (saved) html.setAttribute('data-theme', saved);
+      else if (window.matchMedia('(prefers-color-scheme: dark)').matches) html.setAttribute('data-theme', 'dark');
+    })();
+
+    const backToTop = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', () => {
+      backToTop.classList.toggle('visible', window.scrollY > 300);
+    });
+
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    fileInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        picker.style.display = 'none';
+        toolbar.style.display = 'flex';
+        filename.textContent = file.name;
+        content.style.display = 'block';
+        content.innerHTML = marked.parse(expandEmoji(reader.result));
+
+        renderMathInElement(content, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          ignoredTags: ['pre', 'code', 'script', 'style', 'textarea']
+        });
+      };
+      reader.onerror = () => {
+        content.style.display = 'block';
+        content.innerHTML = '<p class="error">文件读取失败</p>';
+      };
+      reader.readAsText(file);
+    });
+  </script>
+</body>
+</html>
