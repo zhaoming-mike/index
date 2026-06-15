@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>Markdown HTML Renderer</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; color: #333; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .page { width: 100%; max-width: 760px; padding: 40px 20px; }
+    .page-header { text-align: center; margin-bottom: 40px; }
+    .page-header h1 { font-size: 1.8rem; margin-bottom: 8px; }
+    .page-header p { color: #888; line-height: 1.6; }
+
+    .cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    @media (max-width: 800px) { .cards { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 500px) { .cards { grid-template-columns: 1fr; } }
+
+    a.card { display: flex; flex-direction: column; background: #fff; border-radius: 12px; box-shadow: 0 1px 8px rgba(0,0,0,0.06); overflow: hidden; text-decoration: none; color: inherit; cursor: pointer; transition: box-shadow .2s, transform .15s; }
+    a.card:hover { box-shadow: 0 2px 16px rgba(0,0,0,0.1); transform: translateY(-2px); }
+
+    .card-preview { padding: 14px 16px; background: #fff; border-bottom: 1px solid #eee; height: 210px; overflow: hidden; }
+
+    /* ===== 默认渲染器预览 ===== */
+    .preview-default { display: flex; flex-direction: column; gap: 5px; height: 100%; }
+    .preview-default .h1 { height: 12px; background: #1a1a1a; border-radius: 2px; width: 38%; }
+    .preview-default .h1-border { height: 1px; background: #e0e0e0; width: 100%; margin-bottom: 2px; }
+    .preview-default .h2 { height: 9px; background: #333; border-radius: 2px; width: 28%; }
+    .preview-default .h2-border { height: 1px; background: #eee; width: 100%; margin-bottom: 1px; }
+    .preview-default .text { height: 5px; background: #d5d5d5; border-radius: 2px; width: 100%; }
+    .preview-default .text.w55 { width: 55%; }
+    .preview-default .text.w70 { width: 70%; }
+    .preview-default .text.w85 { width: 85%; }
+    .preview-default .quote { border-left: 3px solid #d0d0d0; padding-left: 8px; display: flex; flex-direction: column; gap: 4px; }
+    .preview-default .quote .text { background: #ddd; }
+    .preview-default .code-block { background: #2d2d2d; border-radius: 4px; padding: 7px 8px; display: flex; flex-direction: column; gap: 3px; }
+    .preview-default .code-block span { height: 4px; background: #5a5a5a; border-radius: 1px; }
+    .preview-default .code-block span:nth-child(1) { width: 75%; }
+    .preview-default .code-block span:nth-child(2) { width: 48%; }
+    .preview-default .code-block span:nth-child(3) { width: 62%; }
+    /* ===== 带目录渲染器预览 ===== */
+    .preview-toc { display: flex; gap: 0; height: 100%; }
+    .preview-toc .sidebar { width: 68px; flex-shrink: 0; border-right: 1px solid #eee; padding-right: 8px; display: flex; flex-direction: column; gap: 5px; }
+    .preview-toc .sidebar .s-title { height: 7px; background: #aaa; border-radius: 2px; width: 100%; margin-bottom: 4px; }
+    .preview-toc .sidebar .s-item { height: 4px; background: #d8d8d8; border-radius: 2px; width: 100%; }
+    .preview-toc .sidebar .s-item.indent { margin-left: 7px; width: 82%; }
+    .preview-toc .sidebar .s-item.indent2 { margin-left: 14px; width: 65%; }
+    .preview-toc .sidebar .s-item.active { background: #0366d6; }
+    .preview-toc .main-mini { flex: 1; padding-left: 10px; display: flex; flex-direction: column; gap: 4px; }
+    .preview-toc .main-mini .h1 { height: 12px; background: #1a1a1a; border-radius: 2px; width: 38%; }
+    .preview-toc .main-mini .h1-border { height: 1px; background: #e0e0e0; width: 100%; margin-bottom: 2px; }
+    .preview-toc .main-mini .h2 { height: 9px; background: #333; border-radius: 2px; width: 28%; }
+    .preview-toc .main-mini .h2-border { height: 1px; background: #eee; width: 100%; margin-bottom: 1px; }
+    .preview-toc .main-mini .text { height: 5px; background: #d5d5d5; border-radius: 2px; width: 100%; }
+    .preview-toc .main-mini .text.w55 { width: 55%; }
+    .preview-toc .main-mini .text.w70 { width: 70%; }
+    .preview-toc .main-mini .text.w85 { width: 85%; }
+    .preview-toc .main-mini .code-block { background: #2d2d2d; border-radius: 4px; padding: 6px 7px; display: flex; flex-direction: column; gap: 2px; }
+    .preview-toc .main-mini .code-block span { height: 4px; background: #5a5a5a; border-radius: 1px; }
+    .preview-toc .main-mini .code-block span:nth-child(1) { width: 75%; }
+    .preview-toc .main-mini .code-block span:nth-child(2) { width: 50%; }
+
+    .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+    .card-body h3 { font-size: 0.95rem; margin-bottom: 4px; }
+    .card-body p { color: #888; font-size: 0.8rem; line-height: 1.45; }
+
+    /* ===== 精美版渲染器预览 ===== */
+    .preview-pretty { display: flex; flex-direction: column; gap: 6px; height: 100%; background: #fafaf8; padding: 10px; border-radius: 4px; }
+    .preview-pretty .p-h1 { height: 14px; background: #2c2c2c; border-radius: 2px; width: 45%; font-family: Georgia, serif; }
+    .preview-pretty .p-text { height: 4px; background: #d0d0cc; border-radius: 2px; width: 100%; }
+    .preview-pretty .p-text.w50 { width: 50%; }
+    .preview-pretty .p-text.w75 { width: 75%; }
+    .preview-pretty .p-h2 { height: 10px; background: #444; border-radius: 2px; width: 32%; margin-top: 2px; }
+    .preview-pretty .p-h2::after { display: none; }
+    .preview-pretty .p-link { height: 5px; background: #b45f2a; border-radius: 2px; width: 30%; opacity: 0.7; }
+    .preview-pretty .p-card { background: #f2f2ee; border-radius: 6px; padding: 8px; border-left: 3px solid rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 3px; margin: 2px 0; }
+    .preview-pretty .p-card .p-text { background: #ddd; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="page-header">
+      <h1>Markdown HTML Renderer</h1>
+      <p>浏览器端 Markdown 预览工具 · 基于 GFM 标准 · 支持本地文件选择</p>
+    </div>
+    <div class="cards">
+      <a class="card" href="renderer.html">
+        <div class="card-preview">
+          <div class="preview-default">
+            <div class="h1"></div>
+            <div class="h1-border"></div>
+            <div class="text w85"></div>
+            <div class="text"></div>
+            <div class="text w70"></div>
+            <div class="text w55"></div>
+            <div class="h2"></div>
+            <div class="h2-border"></div>
+            <div class="text"></div>
+            <div class="text w85"></div>
+            <div class="code-block">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="text w70"></div>
+            <div class="quote">
+              <div class="text w85"></div>
+              <div class="text w55"></div>
+            </div>
+            <div class="text w85"></div>
+            <div class="text"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>默认渲染器</h3>
+          <p>全宽渲染 Markdown 内容，适合快速查看单个文件。</p>
+        </div>
+      </a>
+      <a class="card" href="renderer-toc.html">
+        <div class="card-preview">
+          <div class="preview-toc">
+            <div class="sidebar">
+              <div class="s-title"></div>
+              <div class="s-item active"></div>
+              <div class="s-item indent"></div>
+              <div class="s-item"></div>
+              <div class="s-item indent"></div>
+              <div class="s-item indent2"></div>
+              <div class="s-item"></div>
+              <div class="s-item indent"></div>
+              <div class="s-item"></div>
+              <div class="s-item indent"></div>
+            </div>
+            <div class="main-mini">
+              <div class="h1"></div>
+              <div class="h1-border"></div>
+              <div class="text w85"></div>
+              <div class="text"></div>
+              <div class="text w70"></div>
+              <div class="text w55"></div>
+              <div class="h2"></div>
+              <div class="h2-border"></div>
+              <div class="text"></div>
+              <div class="text w85"></div>
+              <div class="code-block"><span></span><span></span></div>
+              <div class="text w70"></div>
+              <div class="text"></div>
+              <div class="text w85"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>带目录渲染器</h3>
+          <p>左侧自动提取标题生成目录，点击快速跳转，适合浏览长文档。</p>
+        </div>
+      </a>
+      <a class="card" href="renderer-pretty.html">
+        <div class="card-preview">
+          <div class="preview-pretty">
+            <div class="p-h1"></div>
+            <div class="p-text"></div>
+            <div class="p-text w75"></div>
+            <div class="p-text"></div>
+            <div class="p-text w50"></div>
+            <div class="p-h2"></div>
+            <div class="p-text"></div>
+            <div class="p-text w75"></div>
+            <div class="p-link"></div>
+            <div class="p-card">
+              <div class="p-text w75"></div>
+              <div class="p-text w50"></div>
+            </div>
+            <div class="p-text"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>精美渲染器</h3>
+          <p>衬线字体、宽松排版、暖色点缀，输出优雅的文档页面。</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
