@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视野与隐蔽 · 坦克世界机制精讲</title>
+    <link rel="stylesheet" href="../assets/wot-style.css">
+</head>
+<body>
+<div class="container">
+    <div class="nav-bar">
+        <div>
+            <h1>视野与隐蔽</h1>
+            <p class="subtitle">点亮系统的底层逻辑 — 你看不见的东西，能要你的命</p>
+        </div>
+        <span class="badge badge-accent">P0 · 核心机制</span>
+    </div>
+
+    <div class="theme-bar">
+        <button class="theme-btn active" id="lightBtn">🌿 浅色·绿黑高效</button>
+        <button class="theme-btn" id="darkBtn">🌲 深色·绿白高效</button>
+    </div>
+
+    <p><strong>视野与隐蔽</strong>是坦克世界最底层、也最容易被低估的机制。理解它，你就不再是"怎么死的都不知道"的新手。简而言之：每辆车都有<strong>视野范围</strong>和<strong>隐蔽值</strong>，二者共同决定<strong>谁在什么时候能看到谁</strong>。</p>
+
+    <!-- ============================================================ -->
+    <h2>1. 三大距离概念</h2>
+
+    <p>很多人混淆三个距离，先彻底区分清楚：</p>
+
+    <table>
+        <thead>
+            <tr><th>概念</th><th>数值</th><th>含义</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>渲染距离 (Draw Distance)</strong></td>
+                <td>707m</td>
+                <td>技术层面的最大可视范围，超过此距离的坦克即便被点亮也不会渲染显示。地图对角的敌人你永远看不见。</td>
+            </tr>
+            <tr>
+                <td><strong>点亮距离 (Spotting Range)</strong></td>
+                <td>445m（上限）</td>
+                <td>游戏机制设定的最大点亮半径。你的视野再高，<strong>也无法点亮超过 445m 外的敌人</strong>。</td>
+            </tr>
+            <tr>
+                <td><strong>视野范围 (View Range)</strong></td>
+                <td>各车不同（无上限）</td>
+                <td>坦克自身的侦查属性值，参与点亮计算公式。超出 445m 的部分并非无用——它会<strong>抵消敌方隐蔽值</strong>。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>关键认知：</strong>视野超过 445m 仍然有效！额外视野用于对抗敌方隐蔽。举例：你视野 500m 打一个隐蔽 30% 的敌人，有效点亮距离 = 500 × (1 - 0.30) = 350m，而不是 445m × 0.70。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>2. 点亮计算公式</h2>
+
+    <p>核心公式决定了"我能不能点亮他"：</p>
+
+    <div class="card">
+        <h3>点亮距离公式</h3>
+        <p style="font-size:1.1rem;text-align:center;margin:1rem 0;">
+            <span class="formula">点亮距离 = 敌方有效视野 - (敌方有效视野 - 50) × 敌方隐蔽值</span>
+        </p>
+        <p style="font-size:0.85rem;color:var(--secondary);text-align:center;">敌方隐蔽值范围 0~1（即 0%~100%）</p>
+    </div>
+
+    <p><strong>简化理解：</strong>隐蔽值越高，被点亮的距离越短。一辆隐蔽 50% 的坦克，会被人在大约一半视野距离处点亮。</p>
+
+    <div class="card">
+        <h3>示例计算</h3>
+        <ul>
+            <li>敌方视野 445m · 你的隐蔽 30% → 点亮距离 ≈ <span class="formula">445 - (445-50)×0.30</span> = <strong>327m</strong></li>
+            <li>敌方视野 500m · 你的隐蔽 30% → 点亮距离 ≈ <span class="formula">500 - (500-50)×0.30</span> = <strong>365m</strong></li>
+            <li>敌方视野 445m · 你的隐蔽 60% → 点亮距离 ≈ <span class="formula">445 - (445-50)×0.60</span> = <strong>208m</strong></li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>3. 隐蔽值构成</h2>
+
+    <p>一辆坦克的最终隐蔽值由多层叠加而成：</p>
+
+    <div class="card">
+        <h3>隐蔽值公式</h3>
+        <p style="font-size:1.1rem;text-align:center;margin:1rem 0;">
+            <span class="formula">最终隐蔽 = 基础隐蔽 × (0.00375 × 乘员隐蔽技能 + 0.5) × 开火惩罚 + 涂装 + 隐蔽网 + 环境隐蔽</span>
+        </p>
+    </div>
+
+    <table>
+        <thead>
+            <tr><th>因素</th><th>作用</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>基础隐蔽</strong></td><td>核心基数</td><td>每辆车固定值，LT和TD通常最高，HT最低。静止和移动时可能不同（LT移动不掉隐蔽）。</td></tr>
+            <tr><td><strong>乘员隐蔽技能</strong></td><td>乘数加成</td><td>全车乘员隐蔽技能平均值，0~100 技能 → 0~0.375 倍率。</td></tr>
+            <tr><td><strong>涂装</strong></td><td>固定加成</td><td>按百分比直接加到隐蔽值上。</td></tr>
+            <tr><td><strong>隐蔽网</strong></td><td>固定加成</td><td>静止3秒后生效，提供额外的隐蔽加成。</td></tr>
+            <tr><td><strong>环境隐蔽</strong></td><td>固定加成</td><td>来自草丛、灌木、倒下的树。这是最关键的战术因素。</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>4. 点亮检查机制</h2>
+
+    <h3>4.1 检查点与视野点</h3>
+
+    <p>每辆坦克身上有 <strong>6 个被检查点</strong>（Visibility Checkpoints）和 <strong>2 个视野点</strong>（View Range Ports）：</p>
+
+    <table>
+        <thead>
+            <tr><th>类型</th><th>位置</th><th>作用</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>被检查点 ×6</td><td>车体前后左右上下</td><td>敌方视野点检测这些点的可见性。只要 <strong>任意一个</strong> 被看到，整辆车都被点亮。</td></tr>
+            <tr><td>视野点 ×2</td><td>炮塔顶部（或车身前部）</td><td>从这些点发出检测射线，去扫描敌方检查点。</td></tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>战术含义：</strong>你不需要把整辆车藏好——只要让所有检查点都被遮挡就行。车尾露出去也可能被点亮（因为车尾有检查点）。同时，被打坏观察口的坦克会失去一个视野点。
+    </div>
+
+    <h3>4.2 检查频率</h3>
+
+    <p>点亮检查不是连续的，而是按<strong>距离分段</strong>以不同频率执行：</p>
+
+    <table>
+        <thead>
+            <tr><th>距离范围</th><th>检查间隔</th><th>含义</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>0 ~ 50m</td><td><strong>0.1 秒</strong></td><td>强制点亮。无论隐蔽多高，50m 内必定相互点亮。这就是"贴脸强亮"。</td></tr>
+            <tr><td>50 ~ 150m</td><td><strong>0.5 秒</strong></td><td>高频检查。近距离交火时反应迅速。</td></tr>
+            <tr><td>150 ~ 270m</td><td><strong>1.0 秒</strong></td><td>中距离标准检查。</td></tr>
+            <tr><td>270 ~ 445m</td><td><strong>2.0 秒</strong></td><td>远距离检查。可能有最多 2 秒的延迟。</td></tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>实战要点：</strong>270~445m 的 2 秒间隔意味着——你可以在点亮之前多跑两步。快速从掩体间通过时，可能根本不会被"看到"。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>5. 草丛与灌木机制</h2>
+
+    <p>环境隐蔽是整个点亮系统中最可控的战术要素。抽象规则很简单：</p>
+
+    <div class="card-row">
+        <div class="card-col">
+            <h3>规则一：透明草丛</h3>
+            <p style="font-size:0.9rem;">当你自己靠近草丛 15m 以内时，草丛<strong>对你而言变成透明</strong>。你可以透过草丛看到外面，但外面看你仍然有草丛加成。</p>
+        </div>
+        <div class="card-col">
+            <h3>规则二：多层叠加</h3>
+            <p style="font-size:0.9rem;">多个草丛/灌木的隐蔽加成<strong>可以叠加</strong>。这也是"双草丛眼位"的底层原理。</p>
+        </div>
+        <div class="card-col">
+            <h3>规则三：倒下的树</h3>
+            <p style="font-size:0.9rem;">被撞倒的树也提供隐蔽加成（约为直立时的 60%~80%），且可以与草丛叠加。</p>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>6. 开火惩罚</h2>
+
+    <p>开火会<strong>大幅降低隐蔽值</strong>，几乎所有坦克都会因此被点亮：</p>
+
+    <table>
+        <thead>
+            <tr><th>车辆类型</th><th>开火后隐蔽变化</th><th>备注</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>轻型坦克 (LT)</strong></td><td>几乎无惩罚</td><td>LT 移动不掉隐蔽，开火也不掉，是其最核心优势。</td></tr>
+            <tr><td><strong>中型坦克 (MT)</strong></td><td>大幅降低</td><td>开火后草丛加成基本被抵消，容易被点亮。</td></tr>
+            <tr><td><strong>重型坦克 (HT)</strong></td><td>严重降低</td><td>基本开火就亮，没有什么悬念。</td></tr>
+            <tr><td><strong>坦克歼击车 (TD)</strong></td><td>中等降低</td><td>静止时隐蔽很好，但开火会暴露——除非配隐蔽网+涂装+在双草丛后。</td></tr>
+            <tr><td><strong>自行火炮 (SPG)</strong></td><td>大幅降低</td><td>本身隐蔽尚可，但开火弹道会被"弹道追踪"发现。</td></tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h3>💡 消音排气系统</h3>
+        <p style="margin-bottom:0;">这是除 LT 之外所有车型都要重点考虑的配件。它不会消除开火惩罚，但能提高移动隐蔽，让你在转场时不至于半路被点亮。</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>7. 视野装备与技能联动</h2>
+
+    <table>
+        <thead>
+            <tr><th>来源</th><th>加成</th><th>类型</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>高光 (Coated Optics)</td><td>+10% 视野（始终生效）</td><td>装备</td></tr>
+            <tr><td>炮队镜 (Binoculars)</td><td>+25% 视野（静止3秒后生效）</td><td>装备</td></tr>
+            <tr><td>车长观瞄系统</td><td>降低敌方隐蔽值</td><td>装备（专用槽）</td></tr>
+            <tr><td>改进通风</td><td>+5% 所有乘员属性（包括视野相关）</td><td>装备</td></tr>
+            <tr><td>侦查 (Recon)(车长技能)</td><td>+2% 视野（100%时）</td><td>技能</td></tr>
+            <tr><td>态势感知 (Situational Awareness)(通信兵)</td><td>+3% 视野（100%时）</td><td>技能</td></tr>
+            <tr><td>兄弟连 (BIA)</td><td>+5% 所有属性</td><td>特长</td></tr>
+            <tr><td>给养 (Cola/口粮等)</td><td>+10% 乘员熟练度</td><td>消耗品</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>8. 常见误区与总结</h2>
+
+    <div class="card">
+        <ul>
+            <li><strong>误区：</strong>"视野超过 445m 就是浪费" → <strong>正确：</strong>超出的视野用于抵消敌方隐蔽，高视野永远有用。</li>
+            <li><strong>误区：</strong>"我躲在草丛后面，开枪也没事" → <strong>正确：</strong>除非你是 LT 或在多层草丛后，否则开火就会亮。</li>
+            <li><strong>误区：</strong>"HT 不需要关心隐蔽" → <strong>正确：</strong>虽然 HT 隐蔽差，但在转场途中被点亮意味着被集火。路线选择就是隐蔽管理。</li>
+            <li><strong>误区：</strong>"涂装只是装饰" → <strong>正确：</strong>涂装提供固定的隐蔽加成，对 LT 和 TD 的作战效果影响巨大。</li>
+        </ul>
+    </div>
+
+    <div class="callout">
+        <strong>一句话总结：</strong>视野让你"看到"，隐蔽让你"不被看到"。两者的差值决定了谁先开炮。而这个游戏中，先开炮的人通常赢。
+    </div>
+
+    <!-- ============================================================ -->
+    <hr>
+    <div class="footer">
+        <p>
+            <a href="../index.html">← 返回首页</a> &nbsp;·&nbsp;
+            下一板块：<a href="02-armor.html">装甲机制 →</a>
+        </p>
+        <p style="margin-top:0.5rem;">内容整理自 <a href="https://wiki.wargaming.net/en/Battle_Mechanics">wiki.wargaming.net Battle Mechanics</a> 及 <a href="https://wiki.wargaming.net/cs/View_Range_%26_Camouflage_(WoT)">View Range & Camouflage</a></p>
+    </div>
+</div>
+
+<script>
+(function() {
+    var root = document.documentElement;
+    var lightBtn = document.getElementById('lightBtn');
+    var darkBtn = document.getElementById('darkBtn');
+
+    function setTheme(name) {
+        if (name === 'dark') {
+            root.style.setProperty('--bg', 'var(--dark-bg)');
+            root.style.setProperty('--text', 'var(--dark-text)');
+            root.style.setProperty('--link', 'var(--dark-link)');
+            root.style.setProperty('--accent', 'var(--dark-accent)');
+            root.style.setProperty('--secondary', 'var(--dark-secondary)');
+            root.style.setProperty('--border', 'var(--dark-border)');
+            root.style.setProperty('--card-bg', 'var(--dark-card-bg)');
+            darkBtn.classList.add('active'); lightBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'dark');
+        } else {
+            root.style.setProperty('--bg', 'var(--light-bg)');
+            root.style.setProperty('--text', 'var(--light-text)');
+            root.style.setProperty('--link', 'var(--light-link)');
+            root.style.setProperty('--accent', 'var(--light-accent)');
+            root.style.setProperty('--secondary', 'var(--light-secondary)');
+            root.style.setProperty('--border', 'var(--light-border)');
+            root.style.setProperty('--card-bg', 'var(--light-card-bg)');
+            lightBtn.classList.add('active'); darkBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'light');
+        }
+    }
+
+    var saved = localStorage.getItem('wot-theme');
+    setTheme(saved === 'dark' ? 'dark' : 'light');
+    lightBtn.addEventListener('click', function() { setTheme('light'); });
+    darkBtn.addEventListener('click', function() { setTheme('dark'); });
+})();
+</script>
+</body>
+</html>
