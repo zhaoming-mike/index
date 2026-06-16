@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>配件与补给 · 坦克世界机制精讲</title>
+    <link rel="stylesheet" href="../assets/wot-style.css">
+</head>
+<body>
+<div class="container">
+    <div class="nav-bar">
+        <div>
+            <h1>配件与补给</h1>
+            <p class="subtitle">装备选择 · 消耗品 · 给养 · 弹药配比 — 让你的车发挥 120% 的性能</p>
+        </div>
+        <span class="badge badge-accent">P2 · 系统机制</span>
+    </div>
+
+    <div class="theme-bar">
+        <button class="theme-btn active" id="lightBtn">🌿 浅色·绿黑高效</button>
+        <button class="theme-btn" id="darkBtn">🌲 深色·绿白高效</button>
+    </div>
+
+    <p>配件和补给是乘员之外<strong>最直接提升车辆性能的方式</strong>。三个装备槽的选择决定了你的车是偏火力、偏侦察还是偏生存。而消耗品和给养在关键回合能扭转胜负。理解每个选项的数值收益，才能把钱花在刀刃上。</p>
+
+    <!-- ============================================================ -->
+    <h2>1. 装备系统概览</h2>
+
+    <p>每辆车有 <strong>3 个装备槽</strong>（部分特殊车 4 个）。装备分四大类：火力、生存、侦察、机动。不同的装备组合定义了你的打法风格。</p>
+
+    <div class="card">
+        <h3>装备槽位规则</h3>
+        <ul>
+            <li><strong>标准装备：</strong>可装在任何槽位，效果满额。</li>
+            <li><strong>加成槽（Boosted Slot）：</strong>每辆车有 1-2 个指定类别的加成槽，装对应类别装备时<strong>效果提升 25-40%</strong>（视装备而异）。</li>
+            <li><strong>拆卸费用：</strong>用金币拆卸免费，用银币拆卸需消耗 10 金币等价物（或直接摧毁装备）。</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>2. 火力类装备</h2>
+
+    <table>
+        <thead>
+            <tr><th>装备</th><th>效果</th><th>加成槽提升</th><th>适用车种</th><th>优先级</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>输弹机 Gun Rammer</strong></td>
+                <td>装填时间 <strong>-10%</strong>（部分车 -11.5%）</td>
+                <td>-12.5%</td>
+                <td>所有车（除弹夹/弹鼓车）</td>
+                <td>⭐⭐⭐ 必装</td>
+            </tr>
+            <tr>
+                <td><strong>垂直稳定器 Vertical Stabilizer</strong></td>
+                <td>移动和炮塔旋转时的瞄准圈扩大 <strong>-20%</strong></td>
+                <td>-25%</td>
+                <td>能装的都装（部分 LT 和低阶车不可用）</td>
+                <td>⭐⭐⭐ 必装</td>
+            </tr>
+            <tr>
+                <td><strong>改进型炮控 Improved Aiming</strong></td>
+                <td>瞄准圈缩小速度 <strong>+10%</strong></td>
+                <td>+12.5%</td>
+                <td>缩圈慢的 HT/TD/SPG</td>
+                <td>⭐⭐ 第三槽候选</td>
+            </tr>
+            <tr>
+                <td><strong>改进型瞄准镜 Improved Sights</strong></td>
+                <td>最终精度（瞄准圈最小值）<strong>-5%</strong>（部分 -7%）</td>
+                <td>-6.25%</td>
+                <td>精度要求高的 TD/MT</td>
+                <td>⭐⭐</td>
+            </tr>
+            <tr>
+                <td><strong>改进型通风 Improved Ventilation</strong></td>
+                <td>全员熟练度 <strong>+5%</strong>（等效所有性能 +2.2%）</td>
+                <td>+6%熟练度</td>
+                <td>全能提升，但单一方向不如专项装备</td>
+                <td>⭐⭐ 万能填充</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h3>火力三件套：输弹 + 垂稳 + 通风/炮控</h3>
+        <p style="margin-bottom:0;">这是最常见的 HT/MT 火力配置。输弹直接提升 DPM，垂稳让你移动开炮更准，第三件选通风（全面）或炮控（缩圈快）。<strong>不推荐同时装垂稳和炮控</strong>——垂稳减少扩圈 + 炮控加速缩圈的组合不如垂稳 + 输弹 + 通风。</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>3. 生存类装备</h2>
+
+    <table>
+        <thead>
+            <tr><th>装备</th><th>效果</th><th>加成槽提升</th><th>适用场景</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>改进型硬化 Improved Hardening</strong></td>
+                <td>血量 +8%（部分 +10%），悬挂血量 +50%，修理后悬挂满血</td>
+                <td>+10%血量</td>
+                <td>HT 前线扛线首选。多 200 HP 在换血中至关重要。</td>
+            </tr>
+            <tr>
+                <td><strong>改进型配置 Modified Configuration</strong></td>
+                <td>模块血量 +30%，修理速度 +10%，<strong>防止弹药架一次殉爆</strong></td>
+                <td>+37.5%模块血量</td>
+                <td>弹药架脆弱的车（苏系 HT、德系 MT 等）。防一次殉爆的价值无法用数字衡量。</td>
+            </tr>
+            <tr>
+                <td><strong>防崩落内衬 Spall Liner</strong></td>
+                <td>HE 和撞击伤害 -50%，乘员受伤概率 -10%</td>
+                <td>-60%</td>
+                <td>面对 HE 弹和火炮时。超重型 HT（Maus/E 100）专用。</td>
+            </tr>
+            <tr>
+                <td><strong>附加履带齿 Additional Grousers</strong></td>
+                <td>悬挂维修速度 +15%，悬挂血量 +25%</td>
+                <td>—</td>
+                <td>实际上硬化已覆盖此功能，一般不单独使用。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>改进型配置的隐藏价值：</strong>"防止一次弹药架殉爆"意味着你可以省下<strong>安全装载</strong>这个装填手特长，把经验投资到其他地方。对于弹药架位置暴露的车（如大部分苏系 HT 侧面），这是首选生存装备。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>4. 侦察类装备</h2>
+
+    <table>
+        <thead>
+            <tr><th>装备</th><th>效果</th><th>加成槽提升</th><th>适用场景</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>高级光学瞄准镜 Coated Optics</strong></td>
+                <td>视野范围 <strong>+10%</strong>（常驻生效）</td>
+                <td>+12.5%</td>
+                <td>需要主动点亮的中坦和突击型 TD。常驻效果适合运动战。</td>
+            </tr>
+            <tr>
+                <td><strong>炮队镜 Binocular Telescope</strong></td>
+                <td>静止 3 秒后视野范围 <strong>+25%</strong></td>
+                <td>+31.25%</td>
+                <td>蹲坑型 TD 和 SPG。静止时视野极大化。</td>
+            </tr>
+            <tr>
+                <td><strong>车长观瞄系统 Commander's Vision System</strong></td>
+                <td>移动中的敌方车辆隐蔽值降低 10-15%（穿透草丛效果）</td>
+                <td>降低 12.5-18.75%</td>
+                <td>LT 专用。帮你发现移动中的敌方 LT。</td>
+            </tr>
+            <tr>
+                <td><strong>改进型排气系统 Improved Exhaust</strong></td>
+                <td>车辆隐蔽值 <strong>+5-8%</strong>（移动/静止均有效）</td>
+                <td>+6-10%</td>
+                <td>LT 和隐蔽型 TD。常驻隐蔽加成，配合伪装网效果更佳。</td>
+            </tr>
+            <tr>
+                <td><strong>低噪音悬挂 Low Noise Suspension</strong></td>
+                <td>移动隐蔽值 +6-8%（静止无效）</td>
+                <td>+7.5-10%</td>
+                <td>纯移动隐蔽加成。LT 侦察配置可选。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h3>视野 vs 隐蔽：选择策略</h3>
+        <ul>
+            <li><strong>LT 主动侦察装：</strong>高光 + 车长观瞄 + 排气。看见别人而不被看见。</li>
+            <li><strong>TD 蹲坑装：</strong>炮队镜 + 伪装网 + 输弹机。最大化静止视野和隐蔽。</li>
+            <li><strong>MT 战斗侦察：</strong>高光（常驻视野）+ 输弹 + 垂稳。兼顾输出和点亮。</li>
+            <li><strong>HT：</strong>通常不装侦察装备。你靠装甲而不是隐蔽来生存。</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>5. 机动类装备</h2>
+
+    <table>
+        <thead>
+            <tr><th>装备</th><th>效果</th><th>加成槽提升</th><th>适用场景</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>涡轮增压器 Turbocharger</strong></td>
+                <td>发动机功率 <strong>+7.5%</strong>（部分 +10%），前进/倒车极速 +4/2 km/h</td>
+                <td>+10%功率</td>
+                <td>慢速 HT（Maus/E 100/Type 5）和需要抢点的 MT。让龟速车能跟上大部队。</td>
+            </tr>
+            <tr>
+                <td><strong>改进型悬挂 Improved Suspension</strong></td>
+                <td>悬挂载重 <strong>+10%</strong>，车体转向速度 +5%</td>
+                <td>+12.5%载重</td>
+                <td>白板期扛不住顶级炮的车（免去研发悬挂的经验）。后期一般换掉。</td>
+            </tr>
+            <tr>
+                <td><strong>改进型无线电 Improved Radio</strong></td>
+                <td>信号范围 <strong>+10%</strong>，队友分享范围 +10%</td>
+                <td>+12.5%</td>
+                <td>低阶车通讯距离不够时。高阶车一般不缺通讯。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>涡轮是慢车的神器。</strong>一辆 Maus 装涡轮后极速从 20 提到 24 km/h——这 4 km/h 的差异意味着你能在大部队到达前进入关键卡位，而不是在半路被点亮后挨打。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>6. 按车种推荐装备组合</h2>
+
+    <table>
+        <thead>
+            <tr><th>车种</th><th>输出配置</th><th>生存配置</th><th>视野配置</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>HT</strong></td>
+                <td>输弹 + 垂稳 + 硬化</td>
+                <td>硬化 + 改进配置 + 输弹</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td><strong>MT</strong></td>
+                <td>输弹 + 垂稳 + 高光</td>
+                <td>输弹 + 垂稳 + 硬化</td>
+                <td>高光 + 输弹 + 垂稳</td>
+            </tr>
+            <tr>
+                <td><strong>LT</strong></td>
+                <td>—</td>
+                <td>—</td>
+                <td>高光 + 车长观瞄 + 排气</td>
+            </tr>
+            <tr>
+                <td><strong>TD（隐蔽型）</strong></td>
+                <td>输弹 + 炮队镜 + 伪装网</td>
+                <td>输弹 + 炮队镜 + 排气</td>
+                <td>炮队镜 + 排气 + 伪装网</td>
+            </tr>
+            <tr>
+                <td><strong>TD（突击型）</strong></td>
+                <td>输弹 + 垂稳 + 硬化</td>
+                <td>硬化 + 改进配置 + 输弹</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td><strong>SPG</strong></td>
+                <td>输弹 + 炮控 + 通风</td>
+                <td>—</td>
+                <td>—</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>7. 消耗品 — 一局只能用一次的关键道具</h2>
+
+    <table>
+        <thead>
+            <tr><th>消耗品</th><th>效果</th><th>冷却时间</th><th>推荐度</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>小型修理箱 Small Repair Kit</strong></td>
+                <td>修理一个受损模块</td>
+                <td>90 秒（可重复使用）</td>
+                <td>⭐ 必带</td>
+            </tr>
+            <tr>
+                <td><strong>大型修理箱 Large Repair Kit</strong></td>
+                <td>修理全部受损模块 + 被动 +10% 修理速度</td>
+                <td>90 秒</td>
+                <td>⭐⭐⭐ 推荐</td>
+            </tr>
+            <tr>
+                <td><strong>小型急救包 Small First Aid Kit</strong></td>
+                <td>救治一名受伤乘员</td>
+                <td>90 秒（可重复使用）</td>
+                <td>⭐ 必带</td>
+            </tr>
+            <tr>
+                <td><strong>大型急救包 Large First Aid Kit</strong></td>
+                <td>救治全部受伤乘员 + 被动 -5% 眩晕时间 + 被动 +15% 乘员保护</td>
+                <td>90 秒</td>
+                <td>⭐⭐⭐ 推荐</td>
+            </tr>
+            <tr>
+                <td><strong>手动灭火器 Manual Fire Extinguisher</strong></td>
+                <td>手动灭火</td>
+                <td>90 秒</td>
+                <td>⭐ 基础</td>
+            </tr>
+            <tr>
+                <td><strong>自动灭火器 Automatic Fire Extinguisher</strong></td>
+                <td>自动灭火 + 被动 -10% 起火概率 + 起火后立即扑灭（0.5s 内）</td>
+                <td>90 秒</td>
+                <td>⭐⭐⭐ 推荐</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h3>大消耗品的被动效果</h3>
+        <p style="margin-bottom:0;">大型修理箱/急救包/自动灭火器的<strong>被动加成在战斗中始终生效</strong>，即使你没有主动使用它们。+10% 修理速度、+15% 乘员保护、-10% 起火概率——这些被动效果叠加起来相当于一个额外的装备。这也是为什么<strong>老玩家几乎全部使用大型消耗品</strong>。</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>8. 给养 — 乘员熟练度的最后一推</h2>
+
+    <p>给养是占用消耗品栏位的食品/饮料类道具，效果为<strong>全员熟练度 +10%</strong>（等效所有性能 +4.5%）。每局消耗一个，费用 1 万（银币）或 2 万（金币高级给养）。</p>
+
+    <table>
+        <thead>
+            <tr><th>给养</th><th>对应国家</th><th>效果</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>巧克力 Chocolate</strong></td><td>德国</td><td>全员熟练度 +10%</td></tr>
+            <tr><td><strong>可乐 Cola</strong></td><td>美国</td><td>全员熟练度 +10%</td></tr>
+            <tr><td><strong>战斗口粮 Combat Rations</strong></td><td>苏联 / 中国</td><td>全员熟练度 +10%</td></tr>
+            <tr><td><strong>咖啡 Coffee</strong></td><td>法国 / 意大利</td><td>全员熟练度 +10%</td></tr>
+            <tr><td><strong>茶 Tea</strong></td><td>英国</td><td>全员熟练度 +10%</td></tr>
+            <tr><td><strong>饭团 Onigiri</strong></td><td>日本</td><td>全员熟练度 +10%</td></tr>
+        </tbody>
+    </table>
+
+    <div class="card-row">
+        <div class="card-col">
+            <h3>给养的使用策略</h3>
+            <p>给养效果与<strong>通风（装备）和 BIA（特长）叠加</strong>：</p>
+            <ul>
+                <li>通风 +5% 熟练度</li>
+                <li>BIA +5% 熟练度</li>
+                <li>给养 +10% 熟练度</li>
+                <li><strong>合计 +20% 熟练度</strong></li>
+            </ul>
+            <p style="font-size:0.85rem;color:var(--secondary);margin-bottom:0;">这意味着你的装填时间、瞄准速度、视野、机动全面提升约 9%。</p>
+        </div>
+        <div class="card-col">
+            <h3>经济考量</h3>
+            <p>每局消耗 1 万银币（或 2 万金币给养），对打金玩家来说是不小开销：</p>
+            <ul>
+                <li><strong>日常野队：</strong>可带可不带。节省开销。</li>
+                <li><strong>排位赛/军团战：</strong>必带。那 4.5% 的全属性差异足以决定胜负。</li>
+                <li><strong>金币给养：</strong>效果更强（+12.5%），但 2 万银币/局，只建议在关键比赛使用。</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>9. 弹药配比 — 带多少发什么弹</h2>
+
+    <p>弹药携带量是有限制的。你需要根据车辆和打法，在 AP/APCR/HEAT/HE 之间分配弹位。</p>
+
+    <table>
+        <thead>
+            <tr><th>弹种</th><th>用途</th><th>推荐占比</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>标准 AP/APCR</strong></td>
+                <td>日常对炮，打同级和低级车</td>
+                <td>40-50%</td>
+                <td>主力弹药。同级车和低级车的正面通常能穿。</td>
+            </tr>
+            <tr>
+                <td><strong>金币 APCR/HEAT</strong></td>
+                <td>打高级车、卖头车、硬目标</td>
+                <td>30-40%</td>
+                <td>+2 房保底手段。打不穿的时候切金弹。</td>
+            </tr>
+            <tr>
+                <td><strong>HE / HESH</strong></td>
+                <td>清模块、打脆皮、重置占点</td>
+                <td>10-20%</td>
+                <td>大口径炮 HE 价值更高。SPG 主用 HE。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>弹药配比黄金法则：</strong>假设你带 40 发炮弹。<strong>至少带 15-20 发金币弹</strong>。进 +2 房打不穿对面 HT 首上的时候，你会感谢自己带够了金弹。HE 带 5-10 发即可——主要用于清理残血、打火炮、或重置基地占点。
+    </div>
+
+    <div class="card">
+        <h3>特殊情况</h3>
+        <ul>
+            <li><strong>弹夹车/弹鼓车：</strong>金币弹占比应该更高（50%+）。因为你无法在弹夹中混装——一梭子要么全是 AP 要么全是 HEAT。切弹机会成本极高。</li>
+            <li><strong>大口径炮（150mm+）：</strong>HE 弹占比应提高到 25-30%。大口径 HE 打中薄甲区域（车顶/侧面/火炮）有可观伤害。</li>
+            <li><strong>SPG：</strong>HE 主用（60-70%），金币 HE（更大溅射）20-30%，AP 仅作为自卫弹（5-10%）。</li>
+            <li><strong>双弹仓车（如 IS-2-II）：</strong>带多种弹型并利用直觉特长快速切换。AP 和 HEAT 各 40%，HE 20%。</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>10. 指令 — 单局限定的额外加成</h2>
+
+    <p>指令（Directives）是每局消耗的临时加成。装在指令槽中，一局消耗一个。可以视为"可选的第六装备"。</p>
+
+    <table>
+        <thead>
+            <tr><th>常用指令</th><th>效果</th><th>适用场景</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>第六感指令</strong></td><td>即使车长没学第六感，也能触发灯泡</td><td>新车长的救命稻草。避免盲视野对线和被黑枪。</td></tr>
+            <tr><td><strong>修理指令</strong></td><td>修理速度 +10%</td><td>HT 和前线车。叠加大修理箱被动 = +20% 修理速度。</td></tr>
+            <tr><td><strong>灭火指令</strong></td><td>起火概率 -10%</td><td>发动机前置的车（德系）或弹药架脆弱的车。</td></tr>
+            <tr><td><strong>隐蔽指令</strong></td><td>隐蔽值 +5%</td><td>LT 和 TD 进一步提升隐蔽。</td></tr>
+            <tr><td><strong>通风指令</strong></td><td>全员熟练度 +2.5%</td><td>叠满所有熟练度加成后，再推一步。</td></tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>指令的性价比：</strong>指令消耗很快（每局一个），日常野队不建议大量使用。但排位赛和军团战中，第六感指令（给没学第六感的新车长）和修理指令（给 HT）的性价比极高。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>11. 总结：装备决策流程</h2>
+
+    <div class="card">
+        <ol>
+            <li><strong>先确定这辆车的打法：</strong>前线扛线 → 生存向；二线火力 → 输出向；点亮游走 → 视野向。</li>
+            <li><strong>输弹机是第一个装备（99% 的车）：</strong>DPM 是一切的基础。</li>
+            <li><strong>垂稳是第二个装备（能装就装）：</strong>移动中开炮的准确性决定了你的有效输出。</li>
+            <li><strong>第三个装备视车种选择：</strong>HT → 硬化/改进配置；MT → 高光/通风；LT → 车长观瞄/排气；TD → 炮队镜/硬化。</li>
+            <li><strong>消耗品用大型版本：</strong>被动效果物超所值。自动灭火器比手动的多一个 -10% 起火概率。</li>
+            <li><strong>给养在关键局使用：</strong>日常野队可省，排位/军团战必带。</li>
+            <li><strong>弹药至少带 35-40% 金币弹：</strong>+2 房时你不会后悔。</li>
+        </ol>
+    </div>
+
+    <div class="callout">
+        <strong>一句话总结：</strong>三件装备 + 三件消耗品 + 给养的选择，相当于给你的车选了一个"亚型"——同一辆 IS-3，输弹+垂稳+硬化是前线绞肉机，输弹+垂稳+高光是战斗侦察兵。没有唯一正确答案，只有最适合你打法的配置。
+    </div>
+
+    <!-- ============================================================ -->
+    <hr>
+    <div class="footer">
+        <p>
+            <a href="../index.html">← 返回首页</a> &nbsp;·&nbsp;
+            <a href="05-matchmaking.html">← 上一板块：匹配机制</a> &nbsp;·&nbsp;
+            下一板块：<a href="07-economy.html">经济系统 →</a>
+        </p>
+        <p style="margin-top:0.5rem;">内容整理自 <a href="https://wiki.wargaming.net/en/Equipment">wiki.wargaming.net Equipment</a></p>
+    </div>
+</div>
+
+<script>
+(function() {
+    var root = document.documentElement;
+    var lightBtn = document.getElementById('lightBtn');
+    var darkBtn = document.getElementById('darkBtn');
+    function setTheme(name) {
+        if (name === 'dark') {
+            root.style.setProperty('--bg', 'var(--dark-bg)');
+            root.style.setProperty('--text', 'var(--dark-text)');
+            root.style.setProperty('--link', 'var(--dark-link)');
+            root.style.setProperty('--accent', 'var(--dark-accent)');
+            root.style.setProperty('--secondary', 'var(--dark-secondary)');
+            root.style.setProperty('--border', 'var(--dark-border)');
+            root.style.setProperty('--card-bg', 'var(--dark-card-bg)');
+            darkBtn.classList.add('active'); lightBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'dark');
+        } else {
+            root.style.setProperty('--bg', 'var(--light-bg)');
+            root.style.setProperty('--text', 'var(--light-text)');
+            root.style.setProperty('--link', 'var(--light-link)');
+            root.style.setProperty('--accent', 'var(--light-accent)');
+            root.style.setProperty('--secondary', 'var(--light-secondary)');
+            root.style.setProperty('--border', 'var(--light-border)');
+            root.style.setProperty('--card-bg', 'var(--light-card-bg)');
+            lightBtn.classList.add('active'); darkBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'light');
+        }
+    }
+    var saved = localStorage.getItem('wot-theme');
+    setTheme(saved === 'dark' ? 'dark' : 'light');
+    lightBtn.addEventListener('click', function() { setTheme('light'); });
+    darkBtn.addEventListener('click', function() { setTheme('dark'); });
+})();
+</script>
+</body>
+</html>
