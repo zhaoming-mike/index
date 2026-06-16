@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>装甲机制 · 坦克世界机制精讲</title>
+    <link rel="stylesheet" href="../assets/wot-style.css">
+</head>
+<body>
+<div class="container">
+    <div class="nav-bar">
+        <div>
+            <h1>装甲机制</h1>
+            <p class="subtitle">等效装甲 · 转正 · 碾压 · 跳弹 — 你的炮弹为什么没穿</p>
+        </div>
+        <span class="badge badge-accent">P0 · 核心机制</span>
+    </div>
+
+    <div class="theme-bar">
+        <button class="theme-btn active" id="lightBtn">🌿 浅色·绿黑高效</button>
+        <button class="theme-btn" id="darkBtn">🌲 深色·绿白高效</button>
+    </div>
+
+    <p>装甲机制决定了<strong>你的炮弹能否击穿敌人</strong>。它不是简单的"穿深 ≥ 装甲厚度"，而是一个涉及角度、弹种、口径的多维计算系统。掌握了这套规则，你对炮时的胜率至少提升 30%。</p>
+
+    <!-- ============================================================ -->
+    <h2>1. 等效装甲 — 一切的基础</h2>
+
+    <p>装甲不是按标称厚度来算的。当装甲倾斜时，炮弹实际上要穿透更厚的一层钢：</p>
+
+    <div class="card">
+        <h3>等效装甲公式</h3>
+        <p style="font-size:1.15rem;text-align:center;margin:1rem 0;">
+            <span class="formula">等效装甲 = 标称厚度 ÷ cos(倾角)</span>
+        </p>
+    </div>
+
+    <table>
+        <thead>
+            <tr><th>标称厚度</th><th>倾角</th><th>cos(倾角)</th><th>等效装甲</th><th>实战含义</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>100mm</td><td>0°（垂直）</td><td>1.000</td><td><strong>100mm</strong></td><td>无加成，最容易被穿</td></tr>
+            <tr><td>100mm</td><td>30°</td><td>0.866</td><td><strong>115mm</strong></td><td>轻微加成</td></tr>
+            <tr><td>100mm</td><td>45°</td><td>0.707</td><td><strong>141mm</strong></td><td>显著加成</td></tr>
+            <tr><td>100mm</td><td>60°</td><td>0.500</td><td><strong>200mm</strong></td><td>等效翻倍，多数炮弹难以击穿</td></tr>
+            <tr><td>100mm</td><td>70°</td><td>0.342</td><td><strong>292mm</strong></td><td>接近跳弹临界角</td></tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>核心认知：</strong>摆角度（angling）本质上就是在<strong>增加等效装甲</strong>。一辆 100mm 首上的坦克，摆出 45° 角就相当于 141mm 防护。这就是为什么高手永远在扭车身。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>2. 转正 — 炮弹的"自适应"</h2>
+
+    <p>AP 和 APCR 炮弹接触倾斜装甲时会<strong>自动偏转</strong>，向装甲法线方向靠近，减小有效倾角。这叫<strong>转正（Normalization）</strong>。</p>
+
+    <table>
+        <thead>
+            <tr><th>弹种</th><th>转正角度</th><th>效果</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>AP</strong></td><td>5°</td><td>撞击 60° 倾斜装甲 → 计算按 55° 处理，等效从 200mm 降至 174mm</td></tr>
+            <tr><td><strong>APCR</strong></td><td>2°</td><td>转正较小，对倾斜装甲的效果比 AP 差。这也是为什么 APCR 穿深高但不一定更好用。</td></tr>
+            <tr><td><strong>HEAT</strong></td><td>0°</td><td>无转正。对倾斜装甲表现最差。85° 自动跳弹。</td></tr>
+            <tr><td><strong>HE / HESH</strong></td><td>—</td><td>不参与穿深-倾角系统，有自己的爆炸判定规则。</td></tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h3>💡 APCR 的隐藏劣势</h3>
+        <p style="margin-bottom:0;">APCR 标称穿深高，但转正只有 2°，对高倾斜装甲的实际效果可能不如 AP（转正 5°）。简单说：<strong>打垂直面用 APCR，打倾斜面用 AP</strong>。这条规则在对抗苏系倾斜装甲车辆（如 IS-7、Obj. 279e）时尤其重要。</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>3. 跳弹 — 打到铁板上的感觉</h2>
+
+    <p>当炮弹撞击装甲的<strong>入射角过大</strong>时，会直接弹开，造成零伤害。</p>
+
+    <table>
+        <thead>
+            <tr><th>弹种</th><th>自动跳弹角</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>AP / APCR</td><td><strong>70°+</strong></td><td>入射角超过 70° 必然跳弹。注意：这是<strong>转正后的角度</strong>。AP 转正 5°，所以实际可以打 ≤75° 的倾斜。</td></tr>
+            <tr><td>HEAT</td><td><strong>85°+</strong></td><td>HEAT 有更大的容错范围，但 85° 以上仍然会跳。且<strong>无转正</strong>。</td></tr>
+            <tr><td>HE / HESH</td><td>不跳弹</td><td>爆炸类弹药不受跳弹机制约束，但 HE 对厚装甲的伤害极低。</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>4. 碾压机制 — 口径即是正义</h2>
+
+    <p>当炮弹口径远大于装甲厚度时，物理定律占了上风：</p>
+
+    <div class="card-row">
+        <div class="card-col">
+            <h3>二倍口径规则</h3>
+            <p>当 <span class="formula">炮弹口径 &gt; 装甲厚度 × 2</span> 时，转正角度大幅提升。</p>
+            <p style="font-size:0.85rem;color:var(--secondary);margin-top:0.5rem;">例：152mm 炮打 70mm 侧面 → 152 &gt; 140 → 触发二倍碾压，等效大幅下降。</p>
+        </div>
+        <div class="card-col">
+            <h3>三倍口径规则</h3>
+            <p>当 <span class="formula">炮弹口径 &gt; 装甲厚度 × 3</span> 时，<strong>不触发跳弹判定</strong>。</p>
+            <p style="font-size:0.85rem;color:var(--secondary);margin-top:0.5rem;">例：120mm 炮打 30mm 顶盖 → 120 &gt; 90 → 三倍碾压，无论什么角度必穿。</p>
+        </div>
+    </div>
+
+    <div class="callout">
+        <strong>实战含义：</strong>大口径炮的价值不只是单发伤害。183mm 炮管可以碾压大多数坦克的车顶和侧面——你不需要瞄弱点，瞄到铁就穿。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>5. HEAT 的特殊规则</h2>
+
+    <p>HEAT（破甲弹）不只是"无转正"，它还有一套独有的限制：</p>
+
+    <table>
+        <thead>
+            <tr><th>特性</th><th>HEAT</th><th>AP/APCR（对比）</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>转正</td><td>0°</td><td>5° / 2°</td></tr>
+            <tr><td>自动跳弹角</td><td>85°</td><td>70°</td></tr>
+            <tr><td>碾压机制</td><td><strong>无</strong></td><td>有（2倍/3倍）</td></tr>
+            <tr><td>间隙装甲</td><td><strong>提前引爆</strong>，失去穿深</td><td>穿深衰减</td></tr>
+            <tr><td>履带</td><td><strong>被履带吸收</strong></td><td>穿透履带后继续判定</td></tr>
+            <tr><td>射速</td><td>飞行速度较慢</td><td>较快</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>6. 间隙装甲与裙甲</h2>
+
+    <p>间隙装甲（Spaced Armor）是在主装甲外面加一层钢板，中间留有空隙。它的核心作用是：</p>
+
+    <div class="card-row">
+        <div class="card-col">
+            <h3>对 HEAT</h3>
+            <p>HEAT 的金属射流在穿透第一层后在间隙中<strong>发散</strong>，到达主装甲时穿深已大幅降低。这也是为什么裙甲对 HEAT 是硬克制。</p>
+        </div>
+        <div class="card-col">
+            <h3>对 AP/APCR</h3>
+            <p>动能弹会穿透外层，在间隙中飞行一段距离后撞击主装甲。穿深会<strong>随距离衰减</strong>（通常每 100mm 间隙衰减若干 mm 穿深）。</p>
+        </div>
+    </div>
+
+    <div class="callout">
+        <strong>常见间隙装甲：</strong>德国 E 系列车体的侧裙甲、苏联 IS-3/IS-7 的箭簇首上、几乎所有坦克的炮盾间隙、履带覆盖的侧面区域。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>7. 常见弱点速查</h2>
+
+    <table>
+        <thead>
+            <tr><th>弱点位置</th><th>为什么是弱点</th><th>如何利用</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>首下（Lower Plate）</strong></td><td>通常倾角较小，等效较低</td><td>正对时是最可靠的击穿位。90% 的 HT 首下都可穿。</td></tr>
+            <tr><td><strong>观察塔（Cupola）</strong></td><td>体积小、垂直或近垂直、装甲薄</td><td>卖头车的终极弱点。需要足够的精度。</td></tr>
+            <tr><td><strong>机枪口/观察口</strong></td><td>平面上的小垂直区域</td><td>小目标，需要瞄准，但穿了就是满伤。</td></tr>
+            <tr><td><strong>炮塔座圈（Turret Ring）</strong></td><td>炮塔和车体之间的缝隙</td><td>卖头时偶尔暴露，打中可能卡炮塔。</td></tr>
+            <tr><td><strong>引擎盖/顶盖</strong></td><td>装甲极薄（通常 20-40mm）</td><td>高打低时可用，大口径炮直接三倍碾压。</td></tr>
+            <tr><td><strong>侧面/后面</strong></td><td>倾角极小，等效≈标称</td><td>所有坦克的侧后都是致命弱点。优先打侧面中段（弹药架位置）。</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>8. 穿深衰减</h2>
+
+    <p>AP 和 APCR 的穿深<strong>随距离衰减</strong>。每辆车的炮都有一个"百米衰减值"：</p>
+
+    <div class="card">
+        <ul>
+            <li><strong>AP/APCR：</strong>随飞行距离线性衰减。游戏内显示的穿深通常为 0m 和 500m 两个值。</li>
+            <li><strong>HEAT：</strong>不衰减。300m 外的 HEAT 穿深和贴脸一样。这对远程射击有优势。</li>
+            <li><strong>HE：</strong>穿深极低（通常 30-90mm），不参与标准穿透判定。</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>9. 总结：对炮决策流程</h2>
+
+    <p>每一发炮弹的命中判定遵循以下顺序：</p>
+
+    <div class="card">
+        <ol>
+            <li><strong>命中判定：</strong>炮弹到达目标</li>
+            <li><strong>碾压判定：</strong>口径 &gt; 3× 装甲厚度？→ 直接跳过跳弹检查</li>
+            <li><strong>跳弹判定：</strong>入射角是否超过跳弹角？（AP/APCR 70°+, HEAT 85°+）→ 跳弹，结束</li>
+            <li><strong>转正计算：</strong>AP 5° / APCR 2° / HEAT 0° → 修正入射角</li>
+            <li><strong>等效装甲计算：</strong>标称厚度 ÷ cos(修正后倾角)</li>
+            <li><strong>穿透判定：</strong>穿深 ≥ 等效装甲？→ 击穿 / 未击穿</li>
+        </ol>
+    </div>
+
+    <div class="callout">
+        <strong>一句话总结：</strong>打不穿不一定是你的穿深不够——角度、弹种选择、距离衰减都有影响。开炮前问自己：我打的是什么弹？打在什么角度上？有没有碾压？
+    </div>
+
+    <!-- ============================================================ -->
+    <hr>
+    <div class="footer">
+        <p>
+            <a href="../index.html">← 返回首页</a> &nbsp;·&nbsp;
+            <a href="01-vision-camo.html">← 上一板块：视野与隐蔽</a> &nbsp;·&nbsp;
+            下一板块：炮弹与穿深（待开发）
+        </p>
+        <p style="margin-top:0.5rem;">内容整理自 <a href="https://wiki.wargaming.net/en/Battle_Mechanics">wiki.wargaming.net Battle Mechanics</a></p>
+    </div>
+</div>
+
+<script>
+(function() {
+    var root = document.documentElement;
+    var lightBtn = document.getElementById('lightBtn');
+    var darkBtn = document.getElementById('darkBtn');
+    function setTheme(name) {
+        if (name === 'dark') {
+            root.style.setProperty('--bg', 'var(--dark-bg)');
+            root.style.setProperty('--text', 'var(--dark-text)');
+            root.style.setProperty('--link', 'var(--dark-link)');
+            root.style.setProperty('--accent', 'var(--dark-accent)');
+            root.style.setProperty('--secondary', 'var(--dark-secondary)');
+            root.style.setProperty('--border', 'var(--dark-border)');
+            root.style.setProperty('--card-bg', 'var(--dark-card-bg)');
+            darkBtn.classList.add('active'); lightBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'dark');
+        } else {
+            root.style.setProperty('--bg', 'var(--light-bg)');
+            root.style.setProperty('--text', 'var(--light-text)');
+            root.style.setProperty('--link', 'var(--light-link)');
+            root.style.setProperty('--accent', 'var(--light-accent)');
+            root.style.setProperty('--secondary', 'var(--light-secondary)');
+            root.style.setProperty('--border', 'var(--light-border)');
+            root.style.setProperty('--card-bg', 'var(--light-card-bg)');
+            lightBtn.classList.add('active'); darkBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'light');
+        }
+    }
+    var saved = localStorage.getItem('wot-theme');
+    setTheme(saved === 'dark' ? 'dark' : 'light');
+    lightBtn.addEventListener('click', function() { setTheme('light'); });
+    darkBtn.addEventListener('click', function() { setTheme('dark'); });
+})();
+</script>
+</body>
+</html>
