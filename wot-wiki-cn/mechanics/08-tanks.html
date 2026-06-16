@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>载具系统 · 坦克世界机制精讲</title>
+    <link rel="stylesheet" href="../assets/wot-style.css">
+</head>
+<body>
+<div class="container">
+    <div class="nav-bar">
+        <div>
+            <h1>载具系统</h1>
+            <p class="subtitle">车辆类型 · 科技树 · 模块升级 · 战地升级 — 选对车只是开始，改对车才是关键</p>
+        </div>
+        <span class="badge badge-accent">P3 · 系统机制</span>
+    </div>
+
+    <div class="theme-bar">
+        <button class="theme-btn active" id="lightBtn">🌿 浅色·绿黑高效</button>
+        <button class="theme-btn" id="darkBtn">🌲 深色·绿白高效</button>
+    </div>
+
+    <p>坦克世界里几百辆车不是随便选的。五种车辆类型各有截然不同的打法和定位，科技树决定你的研发路线，模块系统决定白板期有多痛苦。理解这套体系，你才知道下一步该练什么、该升什么。</p>
+
+    <!-- ============================================================ -->
+    <h2>1. 五种车辆类型 — 你适合哪种打法</h2>
+
+    <table>
+        <thead>
+            <tr><th>类型</th><th>缩写</th><th>核心定位</th><th>标志性机制</th><th>适合玩家</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>轻型坦克</strong></td>
+                <td>LT</td>
+                <td>侦察、点亮、骚扰</td>
+                <td>移动中不掉隐蔽值。视野最高。体型最小。</td>
+                <td>喜欢机动和视野博弈的玩家。需要地图意识和走位判断力。</td>
+            </tr>
+            <tr>
+                <td><strong>中型坦克</strong></td>
+                <td>MT</td>
+                <td>全能、转场、火力支援</td>
+                <td>各方面均衡。机动好、火力中等、装甲可跳弹。游戏中最灵活的车种。</td>
+                <td>喜欢主动创造机会的玩家。MT 高手能左右战局走向。</td>
+            </tr>
+            <tr>
+                <td><strong>重型坦克</strong></td>
+                <td>HT</td>
+                <td>扛线、推进、压制</td>
+                <td>装甲最厚、血量最高、单发伤害高。但机动最慢、隐蔽最差。</td>
+                <td>喜欢正面硬刚的玩家。容错率最高的车种，新手首选。</td>
+            </tr>
+            <tr>
+                <td><strong>坦克歼击车</strong></td>
+                <td>TD</td>
+                <td>远程火力、伏击、区域封锁</td>
+                <td>穿深和 DPM 最高，隐蔽好（隐蔽型）或装甲厚（突击型）。多数无炮塔。</td>
+                <td>喜欢蹲坑和有耐心等机会的玩家。有炮塔 TD 更灵活但通常甲薄。</td>
+            </tr>
+            <tr>
+                <td><strong>自行火炮</strong></td>
+                <td>SPG</td>
+                <td>远程曲射、眩晕支援</td>
+                <td>鸟瞰视角。曲射无视掩体和装甲倾角。HE 弹可眩晕乘员。</td>
+                <td>喜欢大局观和支援位的玩家。排队最慢的车种。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="card-row">
+        <div class="card-col">
+            <h3>LT 的特殊性</h3>
+            <p>LT 是唯一<strong>移动中隐蔽值不降低</strong>的车种。这意味着你可以全速前进同时保持完全隐蔽。配合高视野和车长观瞄系统，一台点亮全队受益。</p>
+        </div>
+        <div class="card-col">
+            <h3>SPG 的特殊性</h3>
+            <p>SPG 的炮弹是<strong>曲射弹道</strong>，可以从上方打击躲在掩体后的敌人。命中后可造成<strong>眩晕</strong>——敌方乘员熟练度暂时降低，给队友创造输出窗口。</p>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>2. 科技树 — 11 个国家，数百条线</h2>
+
+    <p>游戏中的坦克按国家分为 11 个科技树。每个国家有若干条独立的"线"（从低阶到高阶的路线）。每条线在车辆特性上有鲜明的国家风格：</p>
+
+    <table>
+        <thead>
+            <tr><th>国家</th><th>核心特色</th><th>代表X级车</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>苏联</strong></td>
+            <td>倾斜装甲、高单发伤害、炮控较差。铁头 HT 线为招牌。</td>
+            <td>IS-7, Obj. 277, Obj. 268/4</td>
+            </tr>
+            <tr><td><strong>德国</strong></td>
+            <td>高精度炮、重装甲 HT、裸奔 TD。E 100 和 Maus 是超重型代表。</td>
+            <td>E 100, Maus, Leopard 1, Grille 15</td>
+            </tr>
+            <tr><td><strong>美国</strong></td>
+            <td>铁头卖头（炮塔装甲极厚）、俯角好、全能 MT。山地之王。</td>
+            <td>T110E5, T110E3, M48 Patton</td>
+            </tr>
+            <tr><td><strong>英国</strong></td>
+            <td>高射速、HESH 弹、重装甲突击 TD。弹夹 MT 为特色。</td>
+            <td>Super Conqueror, Badger, Centurion AX</td>
+            </tr>
+            <tr><td><strong>法国</strong></td>
+            <td>弹夹/弹鼓系统（连发）、轻甲高机动。爆发力最强的国家。</td>
+            <td>AMX 50 B, Bat.-Châtillon 25 t, AMX M4 54</td>
+            </tr>
+            <tr><td><strong>中国</strong></td>
+            <td>苏系血统但更灵活。重炮 HT、高机动 MT/LT。</td>
+            <td>113, WZ-111 5A, 121</td>
+            </tr>
+            <tr><td><strong>日本</strong></td>
+            <td>超重型 HT（Type 5 Heavy）、液压悬挂（可调俯角）。</td>
+            <td>Type 5 Heavy, STB-1</td>
+            </tr>
+            <tr><td><strong>捷克斯洛伐克</strong></td>
+            <td>弹夹 MT 线、高爆发力。</td>
+            <td>TVP T 50/51, Vz. 55</td>
+            </tr>
+            <tr><td><strong>瑞典</strong></td>
+            <td>液压悬挂（攻城模式）、极致俯角、高隐蔽 TD。</td>
+            <td>Strv 103B, Kranvagn, UDES 15/16</td>
+            </tr>
+            <tr><td><strong>波兰</strong></td>
+            <td>大口径重炮 HT、高单发 TD。</td>
+            <td>60TP Lewandowskiego</td>
+            </tr>
+            <tr><td><strong>意大利</strong></td>
+            <td>自动装填系统（装弹越久单发越快）、弹鼓 MT。</td>
+            <td>Progetto 65, Rinoceronte</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>新手推荐起步国家：</strong>苏联 HT 线（IS-7 线）— 容错率高、装甲可靠、打法直观。练到 IS-3（VIII 级）时你已经掌握了 HT 的核心操作。第二条线推荐美国 MT 线（M48 Patton 线）— 俯角好用、炮控稳定、可以学会利用地形。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>3. 模块系统 — 白板期的苦与完全体的甜</h2>
+
+    <p>每辆新买的坦克都是<strong>"白板"状态</strong>——装备着最基础的模块。你需要用战斗经验依次研发和升级以下五个模块：</p>
+
+    <table>
+        <thead>
+            <tr><th>模块</th><th>影响</th><th>升级优先级</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>炮 Gun</strong></td>
+                <td>伤害、穿深、射速、精度、瞄准时间。最重要的模块。</td>
+                <td>⭐⭐⭐ 第一优先</td>
+            </tr>
+            <tr>
+                <td><strong>炮塔 Turret</strong></td>
+                <td>装甲厚度、视野范围、炮塔转速。通常解锁后才能装更好的炮。</td>
+                <td>⭐⭐ 视情况（如果顶级炮需要新炮塔，则优先研发）</td>
+            </tr>
+            <tr>
+                <td><strong>发动机 Engine</strong></td>
+                <td>马力、推重比。影响加速、爬坡、转向。</td>
+                <td>⭐⭐ 第三优先</td>
+            </tr>
+            <tr>
+                <td><strong>悬挂 Suspension</strong></td>
+                <td>载重上限、转向速度。装重炮/重炮塔通常需要先升级悬挂。</td>
+                <td>⭐⭐ 取决于载重（装不下新炮时先升悬挂）</td>
+            </tr>
+            <tr>
+                <td><strong>电台 Radio</strong></td>
+                <td>通讯距离。高阶车一般够用，低阶车偶尔不够。</td>
+                <td>⭐ 最后升</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h3>白板期的生存指南</h3>
+        <ul>
+            <li><strong>全局经验跳过白板炮：</strong>白板炮的穿深和伤害通常极低。用攒的全局经验直接研发顶级炮——这是全局经验最高价值的用法。</li>
+            <li><strong>改进型悬挂是白板期的神器：</strong>如果顶级炮太重而白板悬挂载重不够，装一个"改进型悬挂"装备可以暂时 +10% 载重，免去先研发悬挂的经验。</li>
+            <li><strong>每天首胜：</strong>白板车至少打每日首胜（×2 经验），加速度过痛苦期。</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>4. 金币车 vs 特种车 — 灰色地带</h2>
+
+    <table>
+        <thead>
+            <tr><th>类型</th><th>金币车 Premium</th><th>特种车 Special/Collector</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>收益系数</strong></td>
+            <td>高（1.5-2.0×）</td>
+            <td>一般（1.0-1.2×）</td></tr>
+            <tr><td><strong>乘员训练</strong></td>
+            <td>同类型同国家乘员免费调入，+50% 乘员经验加成</td>
+            <td>同类型同国家乘员免费调入，无额外经验加成</td></tr>
+            <tr><td><strong>分房保护</strong></td>
+            <td>老金币车有，新金币车无</td>
+            <td>通常无</td>
+            </tr>
+            <tr><td><strong>购买方式</strong></td>
+            <td>金币 / 现金直购</td>
+            <td>活动奖励 / 债券兑换 / 军团战奖励</td></tr>
+            <tr><td><strong>模块升级</strong></td>
+            <td>无模块系统（固定配置）</td>
+            <td>无模块系统（固定配置）</td></tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>金币车的核心价值：</strong>打钱 + 训练乘员。一辆 VIII 金币车是你银币循环的心脏。不要为了"收藏"买金币车——买你能开得好、打得爽的那辆。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>5. 外观系统 — 不只是好看</h2>
+
+    <table>
+        <thead>
+            <tr><th>外观类型</th><th>效果</th><th>获取方式</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>涂装 Camouflage</strong></td>
+                <td>车辆隐蔽值 <strong>+2-4%</strong>（具体取决于涂装和车种）</td>
+                <td>金币购买 / 任务奖励 / 战令奖励</td>
+            </tr>
+            <tr>
+                <td><strong>贴花/徽章 Decals/Emblems</strong></td>
+                <td>纯外观，无属性加成</td>
+                <td>各种活动和任务</td>
+            </tr>
+            <tr>
+                <td><strong>3D 风格 3D Styles</strong></td>
+                <td>改变车辆外观模型 + 涂装隐蔽加成。部分 3D 风格有视觉效果（如附加装甲、沙袋等）但属性不变。</td>
+                <td>战令 / 活动商店 / 排位赛 / 金币商城</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>涂装的隐蔽加成是实实在在的数值提升。</strong>对 LT 和 TD 来说，+3-4% 隐蔽值可能意味着先发制人还是被人先亮。不要为了省金币裸奔你的 LT——这相当于自废武功。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>6. 战地升级 —"完全体"之上的定制化</h2>
+
+    <p>战地升级（Field Modifications）是在车辆达到<strong>完全体（所有模块研发完毕 + 下一辆车已研发）</strong>后解锁的额外定制系统。它允许你在两个互相排斥的升级中做选择——强化某一方面的同时牺牲另一方面。</p>
+
+    <h3>6.1 升级等级</h3>
+
+    <table>
+        <thead>
+            <tr><th>等级</th><th>需要经验</th><th>解锁内容</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>I</td><td>约 15000 经验</td><td>第一个二选一升级</td></tr>
+            <tr><td>II</td><td>约 25000 经验</td><td>第二个二选一升级</td></tr>
+            <tr><td>III</td><td>约 40000 经验</td><td>第三个二选一升级</td></tr>
+            <tr><td>IV</td><td>约 60000 经验</td><td>第四个二选一升级</td></tr>
+            <tr><td>V</td><td>约 80000 经验</td><td>第五个二选一升级</td></tr>
+            <tr><td>VI</td><td>约 100000 经验</td><td>第六个二选一升级</td></tr>
+            <tr><td>VII</td><td>约 120000 经验</td><td>第七个二选一升级</td></tr>
+            <tr><td>VIII</td><td>约 150000 经验</td><td>第八个二选一升级（全满）</td></tr>
+        </tbody>
+    </table>
+
+    <h3>6.2 常见升级选项示例</h3>
+
+    <table>
+        <thead>
+            <tr><th>升级类别</th><th>选项 A（进攻向）</th><th>选项 B（生存向）</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>装填 vs 瞄准</strong></td>
+            <td>装填时间 -3%</td>
+            <td>瞄准圈大小 -5%</td></tr>
+            <tr><td><strong>视野 vs 隐蔽</strong></td>
+            <td>视野 +3%</td>
+            <td>隐蔽 +3%</td></tr>
+            <tr><td><strong>机动 vs 血量</strong></td>
+            <td>发动机功率 +5%</td>
+            <td>悬挂血量 +30%</td></tr>
+            <tr><td><strong>修理 vs 速度</strong></td>
+            <td>修理速度 +10%</td>
+            <td>极速 +2 km/h</td></tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h3>战地升级的实用建议</h3>
+        <ul>
+            <li><strong>优先做你最爱的车：</strong>VIII-X 级是你长时间驻留的等级，战地升级的经验投入需要几十上百场才能回本。只给你会玩至少 100 场的车做战地升级。</li>
+            <li><strong>升级可以切换：</strong>选择不是永久的。你可以随时切换选项 A/B（免费），根据地图和打法调整。</li>
+            <li><strong>额外装备槽：</strong>战地升级到达一定等级后解锁额外的装备槽配置方案——你可以为同一辆车存储多套装备组合并在开局前切换。</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>7. 车辆选择路线建议</h2>
+
+    <div class="card">
+        <h3>不同目标的推荐路线</h3>
+        <ul>
+            <li><strong>新手练手：</strong>苏联 IS-7 线（HT）→ 美国 M48 Patton 线（MT）→ 德国 Grille 15 线（TD，学习蹲坑）</li>
+            <li><strong>打钱专用：</strong>任意 VIII 金币车（推荐 Löwe、SU-130PM、Type 59、Progetto 46）</li>
+            <li><strong>军团战：</strong>Obj. 277（苏 HT，速度+火力）、Super Conqueror（英 HT，铁头卖头）、CS-63（波 MT，涡轮模式抢点）</li>
+            <li><strong>追求独特体验：</strong>瑞典 Strv 103B（攻城模式 TD）、意大利 Progetto 65（自动装填 MT）、法国 AMX 50 B（弹夹 HT）</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>8. 总结</h2>
+
+    <div class="card">
+        <ol>
+            <li><strong>五种类型各有定位：</strong>新手从 HT 开始，进阶试 MT，高手玩 LT。</li>
+            <li><strong>国家风格决定手感：</strong>苏联倾斜装甲、德国高精度、美国好俯角、法国高爆发。</li>
+            <li><strong>白板期用全局经验跳顶级炮：</strong>这是全局经验最高价值的用法。</li>
+            <li><strong>金币车是经济循环的核心：</strong>买你真正会开的，不买收藏品。</li>
+            <li><strong>涂装不是装饰——有隐蔽加成：</strong>LT 和 TD 必须上涂装。</li>
+            <li><strong>战地升级只做你最爱的车：</strong>投入大，回报慢。VIII-X 级长期驻留车才值得。</li>
+        </ol>
+    </div>
+
+    <div class="callout">
+        <strong>一句话总结：</strong>选对车只是开局，改对车（模块+装备+战地升级）才是决胜。一辆完全改装的 VIII 级金币车能打出 X 级白板车的效果。
+    </div>
+
+    <!-- ============================================================ -->
+    <hr>
+    <div class="footer">
+        <p>
+            <a href="../index.html">← 返回首页</a> &nbsp;·&nbsp;
+            <a href="07-economy.html">← 上一板块：经济系统</a> &nbsp;·&nbsp;
+            下一板块：<a href="09-maps.html">地图 →</a>
+        </p>
+        <p style="margin-top:0.5rem;">内容整理自 <a href="https://wiki.wargaming.net/en/Tanks">wiki.wargaming.net Tanks</a></p>
+    </div>
+</div>
+
+<script>
+(function() {
+    var root = document.documentElement;
+    var lightBtn = document.getElementById('lightBtn');
+    var darkBtn = document.getElementById('darkBtn');
+    function setTheme(name) {
+        if (name === 'dark') {
+            root.style.setProperty('--bg', 'var(--dark-bg)');
+            root.style.setProperty('--text', 'var(--dark-text)');
+            root.style.setProperty('--link', 'var(--dark-link)');
+            root.style.setProperty('--accent', 'var(--dark-accent)');
+            root.style.setProperty('--secondary', 'var(--dark-secondary)');
+            root.style.setProperty('--border', 'var(--dark-border)');
+            root.style.setProperty('--card-bg', 'var(--dark-card-bg)');
+            darkBtn.classList.add('active'); lightBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'dark');
+        } else {
+            root.style.setProperty('--bg', 'var(--light-bg)');
+            root.style.setProperty('--text', 'var(--light-text)');
+            root.style.setProperty('--link', 'var(--light-link)');
+            root.style.setProperty('--accent', 'var(--light-accent)');
+            root.style.setProperty('--secondary', 'var(--light-secondary)');
+            root.style.setProperty('--border', 'var(--light-border)');
+            root.style.setProperty('--card-bg', 'var(--light-card-bg)');
+            lightBtn.classList.add('active'); darkBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'light');
+        }
+    }
+    var saved = localStorage.getItem('wot-theme');
+    setTheme(saved === 'dark' ? 'dark' : 'light');
+    lightBtn.addEventListener('click', function() { setTheme('light'); });
+    darkBtn.addEventListener('click', function() { setTheme('dark'); });
+})();
+</script>
+</body>
+</html>
