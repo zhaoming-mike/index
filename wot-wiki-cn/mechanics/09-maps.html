@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地图 · 坦克世界机制精讲</title>
+    <link rel="stylesheet" href="../assets/wot-style.css">
+</head>
+<body>
+<div class="container">
+    <div class="nav-bar">
+        <div>
+            <h1>地图</h1>
+            <p class="subtitle">地图池 · 等级分布 · 战术要点 — 知道该往哪走比知道怎么开炮更重要</p>
+        </div>
+        <span class="badge badge-accent">P3 · 系统机制</span>
+    </div>
+
+    <div class="theme-bar">
+        <button class="theme-btn active" id="lightBtn">🌿 浅色·绿黑高效</button>
+        <button class="theme-btn" id="darkBtn">🌲 深色·绿白高效</button>
+    </div>
+
+    <p>地图知识是坦克世界最被低估的技能。知道每张地图的<strong>关键位置、火力线、眼位和盲区</strong>，你就能在开局 30 秒做出正确走位——而这往往决定了接下来 10 分钟的战斗质量。</p>
+
+    <!-- ============================================================ -->
+    <h2>1. 地图池与等级分布</h2>
+
+    <p>地图按车辆等级逐步解锁。低阶车只会在小地图池中战斗，随着等级提升，可进入的地图越来越多。</p>
+
+    <table>
+        <thead>
+            <tr><th>车辆等级</th><th>地图池</th><th>地图数量</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Tier 1</strong></td>
+            <td>Himmelsdorf, Mines</td>
+            <td>2 张</td></tr>
+            <tr><td><strong>Tier 2-3</strong></td>
+            <td>+ Malinovka, Ensk, Ruinberg, Karelia, Prokhorovka</td>
+            <td>约 7 张</td></tr>
+            <tr><td><strong>Tier 4-5</strong></td>
+            <td>+ 大部分标准地图（逐步开放）</td>
+            <td>约 20 张</td></tr>
+            <tr><td><strong>Tier 6-7</strong></td>
+            <td>+ 大型地图 + 一些专属地图</td>
+            <td>约 30 张</td></tr>
+            <tr><td><strong>Tier 8-10</strong></td>
+            <td>全部地图池</td>
+            <td>约 40 张</td></tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>新手建议：</strong>Tier 1-3 的地图池很小，是学习基本地图意识的最佳时期。把 Himmelsdorf（城市图）和 Malinovka（开阔图）两张极端地图吃透，你就理解了两种地图类型的核心差异。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>2. 地图按模式限制</h2>
+
+    <p>某些地图只在特定模式下开放：</p>
+
+    <table>
+        <thead>
+            <tr><th>模式</th><th>地图限制</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>标准模式 Standard</strong></td>
+            <td>全部地图池。每队各有一个基地，争夺中间的控制权。</td>
+        </tr>
+        <tr><td><strong>遭遇战 Encounter</strong></td>
+            <td>受限地图池。地图中央有一个中立基地，双方争夺同一个点。</td>
+        </tr>
+        <tr><td><strong>强攻模式 Assault</strong></td>
+            <td>更受限的地图池。一方防守基地，一方进攻。进攻方有时间限制。</td>
+        </tr>
+        <tr><td><strong>大战场 Grand Battle</strong></td>
+            <td>仅限 30v30 模式。地图面积约为标准模式的 2.5 倍。目前仅对 Tier X 开放。</td>
+        </tr>
+    </table>
+
+    <p>你可以在设置中<strong>单独关闭遭遇战和强攻模式</strong>。如果你不喜欢这两种非对称模式，关闭后只会匹配到标准模式。</p>
+
+    <!-- ============================================================ -->
+    <h2>3. 地图屏蔽 — 告别你最讨厌的地图</h2>
+
+    <table>
+        <thead>
+            <tr><th>账号类型</th><th>可屏蔽数量</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>免费账号</td><td><strong>1 张</strong></td></tr>
+            <tr><td>高级账号</td><td><strong>2 张</strong></td></tr>
+        </tbody>
+    </table>
+
+    <p>屏蔽的地图不会出现在你的匹配中——除非你组队时和队友的屏蔽列表冲突。屏蔽可在游戏设置中随时修改。</p>
+
+    <div class="card">
+        <h3>应该屏蔽哪张地图？</h3>
+        <ul>
+            <li><strong>和你主玩车种相克的地图：</strong>开 HT 就屏蔽开阔图（如 Prokhorovka——HT 在开阔地是靶子）；开 LT/TD 就屏蔽纯城市图（如 Himmelsdorf——没有视野博弈空间）。</li>
+            <li><strong>你胜率极低的地图：</strong>去你的战绩统计里看——哪张图的胜率最低就屏蔽哪张。</li>
+            <li><strong>不要浪费屏蔽位在小地图上：</strong>低阶地图随着等级提升自然消失。</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>4. 地图类型分类</h2>
+
+    <p>40 张地图大致可分为三类，每种类型的打法截然不同：</p>
+
+    <div class="card-row">
+        <div class="card-col">
+            <h3>城市图 City</h3>
+            <p><strong>代表：</strong>Himmelsdorf, Ensk, Ruinberg, Kharkov</p>
+            <p>建筑物密集，掩体多，视野线短。HT 和突击 TD 的天下。LT 和隐蔽 TD 几乎没有发挥空间。</p>
+            <p style="font-size:0.85rem;color:var(--secondary);">核心技巧：控制转角、预瞄出枪。谁先出墙角谁先挨打。</p>
+        </div>
+        <div class="card-col">
+            <h3>开阔图 Open</h3>
+            <p><strong>代表：</strong>Malinovka, Prokhorovka, Murovanka, Steppes</p>
+            <p>视野线长，草丛多，掩体少。LT 和 TD 的舞台。HT 在这类地图上极其脆弱。</p>
+            <p style="font-size:0.85rem;color:var(--secondary);">核心技巧：控制眼位、利用草丛。谁先被点亮谁就陷入被动。</p>
+        </div>
+        <div class="card-col">
+            <h3>混合图 Mixed</h3>
+            <p><strong>代表：</strong>Lakeville, Sand River, Westfield, Cliff</p>
+            <p>一侧城市/丘陵、一侧开阔地。所有车种都能找到自己的位置。MT 在这类图上限最高。</p>
+            <p style="font-size:0.85rem;color:var(--secondary);">核心技巧：读队伍阵容，决定主力方向。正确判断重兵投入哪一侧是关键。</p>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>5. 核心地图战术要点</h2>
+
+    <h3>5.1 Himmelsdorf — 纯城市绞肉机</h3>
+
+    <table>
+        <thead>
+            <tr><th>车种</th><th>推荐路线</th><th>要点</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>HT</strong></td><td>8 线（铁路侧）或 0 线（山丘侧）</td><td>重坦在铁路侧正面互怼。偷炮 HT 走山丘侧利用坡度和转角。</td></tr>
+            <tr><td><strong>MT</strong></td><td>山丘城堡区域（地图中央高地）</td><td>控制城堡 = 控制地图中央的火力线。可以打击下方街道。</td></tr>
+            <tr><td><strong>LT</strong></td><td>基本废了</td><td>没有视野博弈空间。靠机动做骚扰，不要第一波冲。</td></tr>
+            <tr><td><strong>TD</strong></td><td>铁路后方的射击线</td><td>利用长街道做远程火力支援。注意暴露后立即换位。</td></tr>
+            <tr><td><strong>SPG</strong></td><td>—</td><td>城市图对火炮不友好。弹道被建筑物大量阻挡。</td></tr>
+        </tbody>
+    </table>
+
+    <h3>5.2 Malinovka — 经典的视野战场</h3>
+
+    <table>
+        <thead>
+            <tr><th>车种</th><th>推荐路线</th><th>要点</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>LT</strong></td><td>中央开阔地的草丛眼位</td><td>开局速度到中央草丛（双方中间的灌木带），静默点亮对面过路车。这场 LT 的表现决定 80% 的胜负。</td></tr>
+            <tr><td><strong>TD</strong></td><td>自家后方的树林射击位</td><td>架在后方掩护己方 LT。优先打对面被点亮的 LT——灭掉对方眼车，对面就瞎了。</td></tr>
+            <tr><td><strong>HT</strong></td><td>山丘（地图东侧）</td><td>HT 去山丘打阵地战。不要在开阔地去找 LT——你会被打成筛子。</td></tr>
+            <tr><td><strong>MT</strong></td><td>中场游走</td><td>填补视野空隙，支援山丘或中央，视战况灵活转场。</td></tr>
+            <tr><td><strong>SPG</strong></td><td>—</td><td>优先打击对面 LT（替己方 LT 减压）和山丘的 HT 群。</td></tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>Malinovka 的黄金法则：</strong>开局不要全队冲一个方向。如果 15 个人全部堆在山丘上，中央和另一侧完全空着，对面 LT 直接长驱直入点亮你们所有人——这一局基本就输了。
+    </div>
+
+    <h3>5.3 Prokhorovka — 开阔图之王</h3>
+
+    <table>
+        <thead>
+            <tr><th>车种</th><th>推荐路线</th><th>要点</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>LT</strong></td><td>1-2 线（西侧森林/轨道）</td><td>轨道和森林中间的灌木带是核心眼位。谁先抢占谁就点亮对方半场。两个 LT 分两路（1 线和 2 线），不要挤在同一点。</td></tr>
+            <tr><td><strong>TD</strong></td><td>1 线后方的树林射击线</td><td>提前架好对面的 LT 通道。打掉 LT 是第一优先。</td></tr>
+            <tr><td><strong>MT</strong></td><td>中央山丘（6-7 线）</td><td>利用山丘的起伏地形做卖头对炮。中坦在这里可以压制对面 TD 的火力线。</td></tr>
+            <tr><td><strong>HT</strong></td><td>8-9 线（东侧村庄/道路）</td><td>村庄里有一些掩体可以打巷战。绝对不要在中间大平地上开——没有掩体的 HT 是火炮和 TD 的活靶子。</td></tr>
+        </tbody>
+    </table>
+
+    <h3>5.4 Lakeville — 经典的"山谷死亡陷阱"</h3>
+
+    <table>
+        <thead>
+            <tr><th>车种</th><th>推荐路线</th><th>要点</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>HT</strong></td><td>城市（地图西侧）</td><td>重坦该去的地方是城市而不是山谷！山谷是一个死亡陷阱——进去了就出不来，对全局毫无影响。</td></tr>
+            <tr><td><strong>MT/LT</strong></td><td>中央公路 + 山谷入口</td><td>在中央公路控制视野，阻止对面从山谷包抄。不要全部进山谷。</td></tr>
+            <tr><td><strong>TD</strong></td><td>中央公路后方的射击台</td><td>架在中央公路两侧的高地上，封锁从山谷出来的人。</td></tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>Lakeville 山谷是一个著名的陷阱。</strong>无数新手开局全部冲进山谷，在里面僵持 10 分钟，出来后基地已经被对面占完了。核心原则：<strong>山谷最多去 2-3 辆机动好的车（MT/LT）守住入口即可。主力必须去城市。</strong>
+    </div>
+
+    <h3>5.5 更多地图速查</h3>
+
+    <table>
+        <thead>
+            <tr><th>地图</th><th>类型</th><th>HT 去哪</th><th>LT/TD 去哪</th><th>一句话要点</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Ruinberg</strong></td><td>混合</td><td>城市街道</td><td>东侧田野</td><td>城市和田野之间有通道相连。注意田野侧的视野控制决定侧袭机会。</td></tr>
+            <tr><td><strong>Murovanka</strong></td><td>开阔</td><td>树林/村庄</td><td>中央开阔地灌木带</td><td>中央的"魔法森林"是必争之地。谁控制谁赢。</td></tr>
+            <tr><td><strong>Steppes</strong></td><td>开阔</td><td>山丘/岩石区</td><td>两翼草丛眼位</td><td>中路的岩石是 HT 唯一的掩体。失去中路 = 被分割。</td></tr>
+            <tr><td><strong>Sand River</strong></td><td>混合</td><td>北侧沙丘</td><td>南侧山坡/草丛</td><td>俯角好的车在北侧沙丘有巨大优势。南侧是视野战场。</td></tr>
+            <tr><td><strong>Cliff</strong></td><td>混合</td><td>山谷/村庄</td><td>悬崖高地</td><td>控制高地的 MT 可以俯射山谷的 HT。高地必争。</td></tr>
+            <tr><td><strong>Westfield</strong></td><td>混合</td><td>城镇（西侧）</td><td>东侧山脊</td><td>山脊上的 TD 和 MT 可以控制大半张地图。城镇 HT 负责扛线。</td></tr>
+            <tr><td><strong>Fisherman's Bay</strong></td><td>混合</td><td>城市（北侧）</td><td>南侧田野和树林</td><td>经典的"一半 HT 一半视野"分布。不要全队堆一边。</td></tr>
+            <tr><td><strong>Mines</strong></td><td>混合</td><td>山下/岛屿</td><td>山丘高地</td><td>山丘是整张地图的制高点。抢到山丘的 MT 可以打下面所有人。</td></tr>
+            <tr><td><strong>Ensk</strong></td><td>城市</td><td>铁路/工厂区</td><td>—</td><td>纯城市图。LT 基本边缘化。HT 和突击 TD 的天下。</td></tr>
+            <tr><td><strong>Karelia</strong></td><td>混合</td><td>山谷/中央岩石</td><td>两侧高地</td><td>中央岩石区的控制权决定全局。两侧高地可以交叉火力。</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>6. 开局 30 秒决策框架</h2>
+
+    <p>每场战斗开始后 30 秒的倒计时，是你最重要的决策窗口：</p>
+
+    <div class="card">
+        <ol>
+            <li><strong>看清地图：</strong>城市图、开阔图还是混合图？这决定了你的基本策略。</li>
+            <li><strong>看清阵容：</strong>我方有几个 LT？对面有几个 HT？如果对面有 5 HT 我方只有 2 HT，城市方向必然吃亏——你需要提前考虑怎么弥补。</li>
+            <li><strong>确定你的位置：</strong>HT → 城市/重装甲区；LT → 核心眼位/草丛；TD → 后方火力线；MT → 根据战况决定支援城市还是视野侧。</li>
+            <li><strong>看小地图的队友动向：</strong>如果你的队友全部冲一边，你就要考虑去另一边守住（哪怕你一个车守不住也要点亮对面动向，给队友争取时间）。</li>
+            <li><strong>初期不要孤军深入：</strong>开局 30 秒你最重要的是安全到位。到了位置再判断是进攻还是防守。</li>
+        </ol>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>7. 常见地图错误</h2>
+
+    <div class="card-row">
+        <div class="card-col">
+            <h3>错误 1：全队走一边</h3>
+            <p>城市图尤其常见——15 个人全部挤在一条街后面排队，另一边完全空着。对面绕后灭你们所有人。即使你一个人守不住另一边，<strong>至少要去点亮</strong>，给队友预警。</p>
+        </div>
+        <div class="card-col">
+            <h3>错误 2：HT 走开阔地</h3>
+            <p>重坦在 Prokhorovka 或 Malinovka 的中央大平原上移动 = 活靶子。对面的 LT 和 TD 会轮流射击你。<strong>HT 必须贴着掩体走</strong>。</p>
+        </div>
+    </div>
+    <div class="card-row">
+        <div class="card-col">
+            <h3>错误 3：LT 开局送掉</h3>
+            <p>轻坦开局全速冲进对面半场想点亮全队 → 被对面 LT 和 TD 集火秒杀。LT 的眼位是<strong>草丛里静默</strong>，不是你死我活的冲锋。</p>
+        </div>
+        <div class="card-col">
+            <h3>错误 4：无视小地图</h3>
+            <p>小地图是你最重要的信息来源。每 5 秒扫一眼：哪里空了？对面主力在哪？队友需要支援吗？不看小地图的玩家，本质上是盲打。</p>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>8. 总结</h2>
+
+    <div class="card">
+        <ol>
+            <li><strong>地图类型决定打法：</strong>城市图 = HT；开阔图 = LT/TD；混合图 = MT。</li>
+            <li><strong>屏蔽和你的车种相克的地图：</strong>HT 屏蔽 Prokhorovka，LT 屏蔽 Himmelsdorf。</li>
+            <li><strong>开局 30 秒是最重要的决策窗口：</strong>看地图、看阵容、看队友动向。</li>
+            <li><strong>不要全队走一边：</strong>哪怕你一个人也要去另一边做视野预警。</li>
+            <li><strong>吃透 5-6 张图比泛泛了解 40 张图更有用：</strong>集中精力学会你最常遇到的几张图的关键位置。</li>
+            <li><strong>多看小地图：</strong>信息是免费的，不看是你的问题。</li>
+        </ol>
+    </div>
+
+    <div class="callout">
+        <strong>一句话总结：</strong>地图知识是坦克世界最便宜的外挂——不需要金币、不需要练级、不需要改装。你只需要知道该往哪走。而这往往是菜鸟和高手之间最大的分水岭。
+    </div>
+
+    <!-- ============================================================ -->
+    <hr>
+    <div class="footer">
+        <p>
+            <a href="../index.html">← 返回首页</a> &nbsp;·&nbsp;
+            <a href="08-tanks.html">← 上一板块：载具系统</a>
+        </p>
+        <p style="margin-top:0.5rem;">内容整理自 <a href="https://wiki.wargaming.net/en/Maps">wiki.wargaming.net Maps</a></p>
+    </div>
+</div>
+
+<script>
+(function() {
+    var root = document.documentElement;
+    var lightBtn = document.getElementById('lightBtn');
+    var darkBtn = document.getElementById('darkBtn');
+    function setTheme(name) {
+        if (name === 'dark') {
+            root.style.setProperty('--bg', 'var(--dark-bg)');
+            root.style.setProperty('--text', 'var(--dark-text)');
+            root.style.setProperty('--link', 'var(--dark-link)');
+            root.style.setProperty('--accent', 'var(--dark-accent)');
+            root.style.setProperty('--secondary', 'var(--dark-secondary)');
+            root.style.setProperty('--border', 'var(--dark-border)');
+            root.style.setProperty('--card-bg', 'var(--dark-card-bg)');
+            darkBtn.classList.add('active'); lightBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'dark');
+        } else {
+            root.style.setProperty('--bg', 'var(--light-bg)');
+            root.style.setProperty('--text', 'var(--light-text)');
+            root.style.setProperty('--link', 'var(--light-link)');
+            root.style.setProperty('--accent', 'var(--light-accent)');
+            root.style.setProperty('--secondary', 'var(--light-secondary)');
+            root.style.setProperty('--border', 'var(--light-border)');
+            root.style.setProperty('--card-bg', 'var(--light-card-bg)');
+            lightBtn.classList.add('active'); darkBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'light');
+        }
+    }
+    var saved = localStorage.getItem('wot-theme');
+    setTheme(saved === 'dark' ? 'dark' : 'light');
+    lightBtn.addEventListener('click', function() { setTheme('light'); });
+    darkBtn.addEventListener('click', function() { setTheme('dark'); });
+})();
+</script>
+</body>
+</html>
