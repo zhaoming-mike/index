@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>匹配机制 · 坦克世界机制精讲</title>
+    <link rel="stylesheet" href="../assets/wot-style.css">
+</head>
+<body>
+<div class="container">
+    <div class="nav-bar">
+        <div>
+            <h1>匹配机制</h1>
+            <p class="subtitle">分房规则 · 3/5/7 模板 · 车辆权重 — 你为什么总是被拉进+2 房</p>
+        </div>
+        <span class="badge badge-accent">P2 · 系统机制</span>
+    </div>
+
+    <div class="theme-bar">
+        <button class="theme-btn active" id="lightBtn">🌿 浅色·绿黑高效</button>
+        <button class="theme-btn" id="darkBtn">🌲 深色·绿白高效</button>
+    </div>
+
+    <p>匹配机制决定了<strong>你会和什么样的敌人/队友同场竞技</strong>。它不是一个简单的"同等级配对"，而是一套涉及战斗等级、车辆模板、类型配额和动态补偿的复杂系统。理解它，你就能预判每一局的大致阵容，从而做出更聪明的选车决策。</p>
+
+    <!-- ============================================================ -->
+    <h2>1. 战斗等级 — 分房的基石</h2>
+
+    <p>每辆坦克都有一个<strong>战斗等级范围</strong>（Battle Tier），不是用 I-X 级简单划分，而是一个 1-11 的数字系统。你的车辆只在匹配到其战斗等级范围内的房间时才会进入。</p>
+
+    <table>
+        <thead>
+            <tr><th>车辆等级</th><th>战斗等级范围</th><th>能进入的房间</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>I 级</strong></td><td>1-2</td><td>1 级房、2 级房</td><td>新手保护区。最高只见到 II 级车。</td></tr>
+            <tr><td><strong>II 级</strong></td><td>1-3</td><td>1-3 级房</td><td>可能见到 III 级车，差距开始出现。</td></tr>
+            <tr><td><strong>III 级</strong></td><td>2-4</td><td>2-4 级房</td><td>分房跨度开始变大。</td></tr>
+            <tr><td><strong>IV 级</strong></td><td>3-6</td><td>3-6 级房</td><td>跨度最大可达 3 个战斗等级。</td></tr>
+            <tr><td><strong>V 级</strong></td><td>3-7</td><td>3-7 级房</td><td>经典分房。KV-1 可能进 7 级房见 Tiger I。</td></tr>
+            <tr><td><strong>VI 级</strong></td><td>4-8</td><td>4-8 级房</td><td>中坚力量。T-34-85 进 8 级房的体验是分水岭。</td></tr>
+            <tr><td><strong>VII 级</strong></td><td>5-9</td><td>5-9 级房</td><td>七级车常被调侃"最惨等级"，因为经常见 IX 级。</td></tr>
+            <tr><td><strong>VIII 级</strong></td><td>6-10</td><td>6-10 级房</td><td>金币车大本营。VIII 进 X 是日常。</td></tr>
+            <tr><td><strong>IX 级</strong></td><td>7-11</td><td>7-11 级房</td><td>接近顶级，性能已十分接近 X 级。</td></tr>
+            <tr><td><strong>X 级</strong></td><td>8-11</td><td>8-11 级房</td><td>顶级车。不会见更高级车，但也没有向上优势。</td></tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>关键理解：</strong>战斗等级 ≠ 车辆等级。一辆 VIII 级车的战斗等级范围是 6-10，意味着它可以进入 6、7、8、9、10 五个不同战斗等级的房间。这就是为什么 VIII 金币车经常被拉去陪 X 级——不是"针对你"，而是 VIII 级的战斗等级范围本身就包含了 9-10。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>2. 3/5/7 模板系统 — 一局有多少辆什么车</h2>
+
+    <p>这是匹配机制的核心。每一局战斗会按照<strong>3/5/7</strong>模板来分配车辆数量：</p>
+
+    <div class="card">
+        <h3>标准 3/5/7 模板</h3>
+        <table>
+            <thead>
+                <tr><th>层级</th><th>每队数量</th><th>车辆等级</th><th>角色</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>顶层 (Top Tier)</strong></td><td>3 辆</td><td>房间最高战斗等级</td><td>主力。火力/装甲/血量全面压制下层。</td></tr>
+                <tr><td><strong>中层 (Middle Tier)</strong></td><td>5 辆</td><td>战斗等级 -1</td><td>辅助。对上需谨慎，对下可碾压。</td></tr>
+                <tr><td><strong>底层 (Bottom Tier)</strong></td><td>7 辆</td><td>战斗等级 -2</td><td>劣势位。你的炮基本打不穿顶层。需要靠视野、断带、侧袭来贡献。</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card-row">
+        <div class="card-col">
+            <h3>3/5/7 实例</h3>
+            <p>一场 8 级房（战斗等级 8）：</p>
+            <ul>
+                <li><strong>顶层 ×3：</strong>VIII 级车（如 IS-3、T32）</li>
+                <li><strong>中层 ×5：</strong>VII 级车（如 T29、IS）</li>
+                <li><strong>底层 ×7：</strong>VI 级车（如 KV-2、T-34-85）</li>
+            </ul>
+            <p style="font-size:0.85rem;color:var(--secondary);margin-bottom:0;">每队 15 人，两队镜像（车型不同但等级结构对称）。</p>
+        </div>
+        <div class="card-col">
+            <h3>变体模板</h3>
+            <p>3/5/7 不是唯一的模板。服务器会根据排队情况启用变体：</p>
+            <ul>
+                <li><strong>5/10：</strong>顶层 5 辆 + 底层 10 辆</li>
+                <li><strong>7/8：</strong>顶层 7 辆 + 底层 8 辆</li>
+                <li><strong>同等级房：</strong>全部 15 辆同一等级（最公平，但排队时间最长）</li>
+            </ul>
+            <p style="font-size:0.85rem;color:var(--secondary);margin-bottom:0;">排队超过一定时间后，系统会放宽模板限制以加速匹配。</p>
+        </div>
+    </div>
+
+    <div class="callout">
+        <strong>为什么你总觉得被拉进 +2 房：</strong>因为 3/5/7 模板里，底层车辆占 <strong>7 辆（47%）</strong>，中层占 5 辆（33%），顶层只占 3 辆（20%）。这意味着<strong>大多数玩家在大多数对局中都处于底层或中层</strong>。这不是错觉——数学上你确实更大概率当孙子。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>3. 车辆权重 — 镜像匹配的隐形裁判</h2>
+
+    <p>匹配系统不只是看等级，每辆车还有一个隐藏的<strong>权重值</strong>。同等级的车辆，权重可能不同——系统试图让两队的总权重保持平衡。</p>
+
+    <table>
+        <thead>
+            <tr><th>因素</th><th>影响</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>车辆类型</strong></td><td>HT 和 TD 权重通常略高于 LT 和 SPG。两队会尽量匹配同类型数量。</td></tr>
+            <tr><td><strong>车辆性能参数</strong></td><td>WG 根据大数据（胜率/场均伤害等）动态调整每辆车的隐藏权重。热门强势车权重更高。</td></tr>
+            <tr><td><strong>金币车 vs 银币车</strong></td><td>部分金币车有分房保护（见下文），权重被限制在较低战斗等级。</td></tr>
+            <tr><td><strong>白板 vs 完全体</strong></td><td>白板车（未完全升级）的权重略低于完全体。系统尽量不把白板车放在顶层。</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>4. 车辆类型配额 — 不能全是重坦</h2>
+
+    <p>每局战斗对各类车辆有数量上限，防止阵容失衡：</p>
+
+    <table>
+        <thead>
+            <tr><th>车辆类型</th><th>每队上限</th><th>设计理由</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>轻型坦克 (LT)</strong></td><td>≤ 5 辆</td><td>轻坦太多会导致视野过度饱和，对战节奏失控。</td></tr>
+            <tr><td><strong>自行火炮 (SPG)</strong></td><td>≤ 3 辆</td><td>火炮过多会严重压制进攻，鼓励蹲坑。这个限制是最严格的。</td></tr>
+            <tr><td><strong>中型坦克 (MT)</strong></td><td>无硬上限</td><td>中坦是最灵活的车种，数量弹性最大。</td></tr>
+            <tr><td><strong>重型坦克 (HT)</strong></td><td>无硬上限</td><td>重坦数量通过权重系统间接调节。</td></tr>
+            <tr><td><strong>坦克歼击车 (TD)</strong></td><td>无硬上限</td><td>TD 数量也通过权重调节。</td></tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>实战含义：</strong>SPG 限制 ≤3 辆是你玩火炮时排队慢的根本原因——游戏里玩火炮的人远比系统能分配的位置多。LT 限制 ≤5 辆在大版本更新后（新线推出）经常触发，导致轻坦排队长。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>5. 组队规则 — 三人小队的限制</h2>
+
+    <p>组队（Platoon，最多 3 人）进入匹配时，有额外的限制：</p>
+
+    <table>
+        <thead>
+            <tr><th>规则</th><th>具体要求</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>等级一致</strong></td><td>组队成员必须使用<strong>同一等级</strong>的车辆。VI + VI + VI 可以，VI + V + VII 不允许。</td></tr>
+            <tr><td><strong>SPG 限制</strong></td><td>一个队伍中最多只能有 <strong>1 辆 SPG</strong>。你不能两人组队开双火炮。</td></tr>
+            <tr><td><strong>分房按最高</strong></td><td>系统以队伍中战斗等级范围<strong>最高的那辆车</strong>为准。如果车队里有一辆车有 +2 分房，全队都可能被拖进 +2 房。</td></tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h3>组队技巧：避开分房陷阱</h3>
+        <ul>
+            <li><strong>避免混搭分房保护车：</strong>如果两辆车有分房保护、一辆没有，全队都会被没有保护的那辆拖进更高级房。</li>
+            <li><strong>全部选有分房保护的车：</strong>三辆都选分房保护车（如 KV-5、IS-6、Type 59），整个队伍都不会见 +2 房。</li>
+            <li><strong>双HT+1MT 组合最强：</strong>两个重坦负责扛线，一个中坦负责转场和视野，体系最完整。</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>6. 分房保护 — 少数车辆的"免死金牌"</h2>
+
+    <p>部分金币车和特种车享有<strong>分房保护（Preferred Matchmaking）</strong>——它们的战斗等级上限被人为压低，不会进入 +2 房。这是 WG 对某些性能较弱的金币车的历史补偿。</p>
+
+    <table>
+        <thead>
+            <tr><th>有分房保护的车辆示例</th><th>正常 VIII 分房</th><th>保护后分房</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>KV-5 (VIII HT, 苏)</td><td>6-10</td><td><strong>6-8</strong>（永不见 IX/X）</td></tr>
+            <tr><td>IS-6 (VIII HT, 苏)</td><td>6-10</td><td><strong>6-8</strong></td></tr>
+            <tr><td>Type 59 (VIII MT, 中)</td><td>6-10</td><td><strong>6-8</strong></td></tr>
+            <tr><td>8,8 cm Pak 43 JagdTiger (VIII TD, 德)</td><td>6-10</td><td><strong>6-8</strong></td></tr>
+            <tr><td>M6A2E1 (VIII HT, 美)</td><td>6-10</td><td><strong>6-8</strong></td></tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>注意：</strong>WG 已宣布<strong>不再给新出金币车提供分房保护</strong>。近期和未来的 VIII 金币车全部是 6-10 分房。上述有分房保护的车都是老车。购买前确认清楚。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>7. 底部补偿 — 当孙子的福利</h2>
+
+    <p>当你的车处于底层（Bottom Tier，比房间最高等级低 2 级）时，系统会给你一些隐性补偿，让你不至于完全打酱油：</p>
+
+    <div class="card-row">
+        <div class="card-col">
+            <h3>经验与银币加成</h3>
+            <p>底层车辆对顶层车辆造成伤害或点亮时，获得的<strong>经验和银币有额外系数加成</strong>（约 +30-50%）。</p>
+            <p style="font-size:0.85rem;color:var(--secondary);">这解释了为什么你在 +2 房打出一发穿甲弹的经验比同等级房高得多。</p>
+        </div>
+        <div class="card-col">
+            <h3>匹配优先级补偿</h3>
+            <p>如果你连续多局被分在底层，系统会提高你下一局<strong>进入顶层或同等级房</strong>的优先级。</p>
+            <p style="font-size:0.85rem;color:var(--secondary);">这不是官方确认的机制，但社区大量数据统计支持这一结论。俗称"连败保送"。</p>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>8. 匹配速度 vs 匹配质量 — 系统的权衡</h2>
+
+    <p>匹配系统在两个目标之间做权衡：</p>
+
+    <table>
+        <thead>
+            <tr><th>目标</th><th>理想状态</th><th>折中方案</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>匹配质量</strong></td><td>15v15 同等级、同类型镜像、权重平衡</td><td>需要较长的排队时间，高峰时段可能实现。</td></tr>
+            <tr><td><strong>匹配速度</strong></td><td>立即进入战斗</td><td>放宽模板限制、扩大等级跨度、允许更大的权重差异。</td></tr>
+        </tbody>
+    </table>
+
+    <p>系统使用一个<strong>时间质量梯度</strong>策略：</p>
+
+    <div class="card">
+        <ol>
+            <li><strong>0-15 秒：</strong>严格按照最优模板匹配。同等级房优先。</li>
+            <li><strong>15-30 秒：</strong>放宽到标准 3/5/7，允许轻微权重差异。</li>
+            <li><strong>30-60 秒：</strong>启用变体模板（5/10、7/8），放宽类型配额。</li>
+            <li><strong>60 秒+：</strong>大幅放宽。可能出现 3 SPG、极端 +/-2 分房等。</li>
+            <li><strong>120 秒+：</strong>几乎无限制。你会见到各种奇怪阵容。</li>
+        </ol>
+    </div>
+
+    <div class="callout">
+        <strong>实操建议：</strong>如果你排队超过 30 秒还没进去——取消重排。30 秒后的匹配质量会显著下降，你更可能被扔进 +2 房且阵容失衡的局。重排通常能刷到更好的房间。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>9. 如何利用匹配机制做更好的决策</h2>
+
+    <div class="card">
+        <h3>选车策略</h3>
+        <ul>
+            <li><strong>想当大哥：</strong>选 VIII 级分房保护车（KV-5/IS-6/Type 59），你的分房上限是 8，永远不会见 X 级。或者直接开 X 级——你永远在顶层。</li>
+            <li><strong>想打钱：</strong>VIII 金币车 + 分房保护 = 稳定见 6-8 级，收益稳定可预期。</li>
+            <li><strong>想练技术：</strong>开 VI-VII 级经常进底层，逼你学会视野、断带、侧面袭击——这是成为高手必须过的关。</li>
+            <li><strong>想快速升级：</strong>组队三人都选同一等级，排队更快。避免 SPG（排队最慢）。</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>战场预判</h3>
+        <ul>
+            <li><strong>加载画面看车辆图标：</strong>加载时快速扫一眼双方的车辆等级分布。如果对面顶层有 3 辆 X 级 HT 而你们顶层是 3 辆 X 级 MT，你要预判正面会吃亏，需要 MT 利用机动打侧袭。</li>
+            <li><strong>底层开局：</strong>如果你是 +2 房里的底层，不要冲在最前面。你的炮打不穿顶层 HT 的正面。优先去<strong>点亮、断带、占点、侧后骚扰</strong>——做你能做的事。</li>
+            <li><strong>顶层开局：</strong>你背负了队伍的火力期望。不要蹲着，也不要无脑冲——你的血量是全队最珍贵的资源。推进、扛线、压制对方顶层——这些是你的责任。</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>10. 总结</h2>
+
+    <div class="card">
+        <ol>
+            <li><strong>战斗等级 ≠ 车辆等级：</strong>每辆车有战斗等级范围，决定了它能进什么房。</li>
+            <li><strong>3/5/7 是主流：</strong>3 顶层 + 5 中层 + 7 底层。大多数玩家大多数时间在底层/中层。</li>
+            <li><strong>排队超过 30 秒就重排：</strong>匹配质量随时间下降，长排队 = 差的房间。</li>
+            <li><strong>组队选同等级 + 避免双 SPG：</strong>否则排队极慢或阵容受限。</li>
+            <li><strong>分房保护是老金币车的特权：</strong>新金币车已不再给分房保护。购买前查清楚。</li>
+            <li><strong>底层也有价值：</strong>点亮、断带、侧袭、占点。经验加成让你的贡献被放大。</li>
+        </ol>
+    </div>
+
+    <div class="callout">
+        <strong>一句话总结：</strong>匹配机制不是你被拉去送死的借口——它是你可以利用的信息。知道这局你是顶层、中层还是底层，决定了你开局 30 秒该往哪走。
+    </div>
+
+    <!-- ============================================================ -->
+    <hr>
+    <div class="footer">
+        <p>
+            <a href="../index.html">← 返回首页</a> &nbsp;·&nbsp;
+            <a href="04-crew.html">← 上一板块：乘员系统</a> &nbsp;·&nbsp;
+            下一板块：<a href="06-equipment.html">配件与补给 →</a>
+        </p>
+        <p style="margin-top:0.5rem;">内容整理自 <a href="https://wiki.wargaming.net/en/Matchmaker">wiki.wargaming.net Matchmaker</a></p>
+    </div>
+</div>
+
+<script>
+(function() {
+    var root = document.documentElement;
+    var lightBtn = document.getElementById('lightBtn');
+    var darkBtn = document.getElementById('darkBtn');
+    function setTheme(name) {
+        if (name === 'dark') {
+            root.style.setProperty('--bg', 'var(--dark-bg)');
+            root.style.setProperty('--text', 'var(--dark-text)');
+            root.style.setProperty('--link', 'var(--dark-link)');
+            root.style.setProperty('--accent', 'var(--dark-accent)');
+            root.style.setProperty('--secondary', 'var(--dark-secondary)');
+            root.style.setProperty('--border', 'var(--dark-border)');
+            root.style.setProperty('--card-bg', 'var(--dark-card-bg)');
+            darkBtn.classList.add('active'); lightBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'dark');
+        } else {
+            root.style.setProperty('--bg', 'var(--light-bg)');
+            root.style.setProperty('--text', 'var(--light-text)');
+            root.style.setProperty('--link', 'var(--light-link)');
+            root.style.setProperty('--accent', 'var(--light-accent)');
+            root.style.setProperty('--secondary', 'var(--light-secondary)');
+            root.style.setProperty('--border', 'var(--light-border)');
+            root.style.setProperty('--card-bg', 'var(--light-card-bg)');
+            lightBtn.classList.add('active'); darkBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'light');
+        }
+    }
+    var saved = localStorage.getItem('wot-theme');
+    setTheme(saved === 'dark' ? 'dark' : 'light');
+    lightBtn.addEventListener('click', function() { setTheme('light'); });
+    darkBtn.addEventListener('click', function() { setTheme('dark'); });
+})();
+</script>
+</body>
+</html>
