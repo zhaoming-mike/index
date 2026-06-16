@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>经济系统 · 坦克世界机制精讲</title>
+    <link rel="stylesheet" href="../assets/wot-style.css">
+</head>
+<body>
+<div class="container">
+    <div class="nav-bar">
+        <div>
+            <h1>经济系统</h1>
+            <p class="subtitle">银币 · 金币 · 经验 · 收益系数 — 你的每一炮都在盈利或亏损</p>
+        </div>
+        <span class="badge badge-accent">P3 · 系统机制</span>
+    </div>
+
+    <div class="theme-bar">
+        <button class="theme-btn active" id="lightBtn">🌿 浅色·绿黑高效</button>
+        <button class="theme-btn" id="darkBtn">🌲 深色·绿白高效</button>
+    </div>
+
+    <p>经济系统决定了你<strong>有没有钱买车、养车、打金弹</strong>。很多玩家发现打到 VIII 级后银币反而少了——这不是错觉，而是收益系数和维修成本共同作用的结果。理解这套机制，你才知道怎么"养家糊口"。</p>
+
+    <!-- ============================================================ -->
+    <h2>1. 货币体系概览</h2>
+
+    <p>坦克世界有 <strong>三种核心货币 + 一种衍生货币</strong>：</p>
+
+    <table>
+        <thead>
+            <tr><th>货币</th><th>英文</th><th>获取方式</th><th>主要用途</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>银币</strong></td>
+                <td>Credits</td>
+                <td>战斗获取（主要），金币兑换</td>
+                <td>买车、买装备、买弹药、维修、买消耗品、升级模块</td>
+            </tr>
+            <tr>
+                <td><strong>金币</strong></td>
+                <td>Gold</td>
+                <td>充值（主要），军团战/锦标赛奖励，战令奖励</td>
+                <td>买金币车、高级账号、拆卸配件、转化全局经验、重置乘员技能</td>
+            </tr>
+            <tr>
+                <td><strong>债券</strong></td>
+                <td>Bonds</td>
+                <td>X 级车战斗获取，排位赛/突袭，每日任务</td>
+                <td>买债券装备（紫装）、特殊 X 级金币车</td>
+            </tr>
+            <tr>
+                <td><strong>全局经验</strong></td>
+                <td>Free XP</td>
+                <td>5% 战斗经验自动转化 + 金币兑换</td>
+                <td>跳过白板模块研发、跳过整条线的弱势车</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>2. 银币 — 日常经济的核心</h2>
+
+    <h3>2.1 获取来源</h3>
+
+    <p>银币不是打完就固定给的。你的<strong>每一点伤害、每一次点亮、每一次协助</strong>都会转化成银币。具体公式非常复杂，但核心规则是：</p>
+
+    <table>
+        <thead>
+            <tr><th>行为</th><th>银币收益</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>造成伤害</strong></td>
+                <td>最高</td>
+                <td>你自己打出的伤害。对同级或高级车造成伤害时收益更高。</td>
+            </tr>
+            <tr>
+                <td><strong>点亮伤害</strong></td>
+                <td>高</td>
+                <td>你点亮的目标被队友击中的伤害。视野车的主要收入来源。</td>
+            </tr>
+            <tr>
+                <td><strong>跟踪/断带协助</strong></td>
+                <td>高</td>
+                <td>你打断履带后队友对该目标的伤害。断带 HT 让它动不了 = 帮队友输出 = 你拿分成。</td>
+            </tr>
+            <tr>
+                <td><strong>占领/防守基地</strong></td>
+                <td>中等</td>
+                <td>占点和守点的贡献。每占 1 点都有分成。</td>
+            </tr>
+            <tr>
+                <td><strong>击杀</strong></td>
+                <td>低</td>
+                <td>补刀奖励不高。收人头拿的银币远不如从头到尾打满伤害。</td>
+            </tr>
+            <tr>
+                <td><strong>胜利加成</strong></td>
+                <td>×1.5</td>
+                <td>获胜方的所有银币收益 ×1.5。输赢差距巨大。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>核心认知：</strong>银币奖励主要来自<strong>伤害输出和点亮协助</strong>，而不是人头。蹲在后面等收人头的玩家银币收入极低。持续输出 + 积极点亮才是打钱的核心逻辑。
+    </div>
+
+    <h3>2.2 支出项目</h3>
+
+    <p>每场战斗结束后，以下项目会从你的银币收入中扣除：</p>
+
+    <table>
+        <thead>
+            <tr><th>支出项目</th><th>计算方式</th><th>节约手段</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>车辆维修</strong></td>
+                <td>车辆被摧毁时全额维修（约 8000-25000 银币，视等级）<br>车辆存活时按损伤比例</td>
+                <td>活下来。车辆存活时维修费大幅减少。尽量不死。</td>
+            </tr>
+            <tr>
+                <td><strong>弹药消耗</strong></td>
+                <td>每发炮弹在发射时计费。金币弹费用极高（2000-4800 银币/发）</td>
+                <td>减少空枪和无效射击。金币弹留到需要时再打。</td>
+            </tr>
+            <tr>
+                <td><strong>消耗品</strong></td>
+                <td>大修/大急救/自动灭火器 ≈ 1 万银币/件。给养 ≈ 1-2 万银币/个。</td>
+                <td>日常野队用小型消耗品即可。关键局再用大型和给养。</td>
+            </tr>
+            <tr>
+                <td><strong>迷彩/涂装</strong></td>
+                <td>有些涂装有额外银币支出（视具体涂装）</td>
+                <td>用免费的战术涂装即可。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h3>为什么你在 VIII 级越来越穷</h3>
+        <p>VIII 级车的维修费约 1-1.5 万银币/局，金币弹约 4000 银币/发。如果你一局打 10 发金弹 + 用 2 个消耗品 + 死了，综合支出 ≈ ：</p>
+        <p style="text-align:center;font-size:1.1rem;margin:0.8rem 0;">40000（金弹）+ 20000（消耗品）+ 15000（维修） = <strong>75000 银币支出</strong></p>
+        <p style="margin-bottom:0;">如果你只有 1000 伤害（约 8000-12000 银币收入），亏损 6 万是常态。这就是为什么你需要金币车打钱。</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>3. 金币 — 付费玩家的优势边界</h2>
+
+    <h3>3.1 获取渠道</h3>
+
+    <table>
+        <thead>
+            <tr><th>渠道</th><th>效率</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>直接购买</strong></td><td>最高</td><td>官网/游戏内商店购买。1 美元 ≈ 250-300 金。</td></tr>
+            <tr><td><strong>军团战</strong></td><td>中等</td><td>参与军团战并取胜可获得金币奖励。需要团队和时间。</td></tr>
+            <tr><td><strong>锦标赛</strong></td><td>中等</td><td>官方的竞技赛事。排名靠前有金币奖励。</td></tr>
+            <tr><td><strong>战令</strong></td><td>慢但稳定</td><td>战令奖励中包含少量金币。每天玩就可以攒。</td></tr>
+            <tr><td><strong>任务/活动</strong></td><td>不稳定</td><td>节日和限时活动偶尔赠送小额金币。</td></tr>
+        </tbody>
+    </table>
+
+    <h3>3.2 金币的性价比用途</h3>
+
+    <table>
+        <thead>
+            <tr><th>用途</th><th>费用</th><th>性价比</th><th>评价</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>买金币车</strong></td>
+                <td>数千-1 万+金币</td>
+                <td>⭐⭐⭐</td>
+                <td>金币最值得的花法。金币车是永久打钱工具，每日首胜 ×2 收益。</td>
+            </tr>
+            <tr>
+                <td><strong>高级账号</strong></td>
+                <td>约 2500 金/月</td>
+                <td>⭐⭐⭐</td>
+                <td>+50% 银币 +50% 经验。常玩必买，是最大效率提升。</td>
+            </tr>
+            <tr>
+                <td><strong>拆卸装备</strong></td>
+                <td>10-20 金/件</td>
+                <td>⭐⭐</td>
+                <td>拆卸复杂装备时比摧毁后重买便宜得多。</td>
+            </tr>
+            <tr>
+                <td><strong>全局经验兑换</strong></td>
+                <td>1 金 = 25 全局</td>
+                <td>⭐⭐</td>
+                <td>跳过灾难性的白板期和弱势车。不要用来跳过整条线（太贵）。</td>
+            </tr>
+            <tr>
+                <td><strong>乘员 100% 重训</strong></td>
+                <td>200 金/人</td>
+                <td>⭐⭐</td>
+                <td>乘员转车时保留全部熟练度。对高技能乘员很有价值。</td>
+            </tr>
+            <tr>
+                <td><strong>银币兑换</strong></td>
+                <td>1 金 = 400 银币</td>
+                <td>❌</td>
+                <td>极不划算。用金币车打一场赚的银币远多于这个比例。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>金币最不值得换银币。</strong>1 金 = 400 银币的比例极低。一辆 VIII 金币车（约 8000 金）如果直接换成银币约 320 万。但你用这辆车打 100 场，轻松赚 500-800 万银币还能继续打下去。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>4. 经验系统 — 三种经验的区别</h2>
+
+    <table>
+        <thead>
+            <tr><th>类型</th><th>英文</th><th>获取方式</th><th>用途</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>战斗经验</strong></td>
+                <td>Combat XP</td>
+                <td>每场战斗获得，绑定在车上</td>
+                <td>研发该车的下一个模块和下一辆车</td>
+            </tr>
+            <tr>
+                <td><strong>全局经验</strong></td>
+                <td>Free XP</td>
+                <td>每场战斗的 5% 战斗经验自动转化 + 金币兑换</td>
+                <td>跨车使用，研发任意模块/车辆。是"万能经验"。</td>
+            </tr>
+            <tr>
+                <td><strong>乘员经验</strong></td>
+                <td>Crew XP</td>
+                <td>每场战斗战斗经验的等量复制（所有乘员平分）</td>
+                <td>提升乘员技能/特长等级</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>4.1 战斗经验的获取</h3>
+
+    <p>和银币类似的公式——<strong>伤害、点亮和协助</strong>是主要来源。额外加成项：</p>
+
+    <ul>
+        <li><strong>每日首胜：</strong>每天每辆车的首场胜利 ×2（部分活动期间 ×3 或 ×5）。</li>
+        <li><strong>英勇抵抗 Brave Resistance：</strong>当你的队伍被碾压（快速失败）而你仍打出了高于队伍平均的伤害时，你获得额外经验（失败方前 5 名）。这是 WG 对"被队友坑了但你自己打得很好"的补偿。</li>
+        <li><strong>高级账号：</strong>所有战斗经验 +50%。</li>
+        <li><strong>个人储备（加成卡）：</strong>限时 +50-200% 经验。来自任务和活动奖励。</li>
+    </ul>
+
+    <h3>4.2 全局经验 — 跳过痛苦的捷径</h3>
+
+    <div class="card">
+        <ul>
+            <li><strong>自动转化：</strong>每场战斗的 5% 战斗经验（不受加成影响）自动转化为全局经验。1000 战斗经验 → 50 全局经验。很慢。</li>
+            <li><strong>金币兑换：</strong>1 金币 = 25 全局经验。将某一辆车上已研发完毕但未使用的"冗余战斗经验"用金币提取为全局经验。一辆打了几百场的 VIII 金币车上可能攒了 10 万+ 冗余经验。</li>
+        </ul>
+        <p style="margin-bottom:0;font-size:0.85rem;color:var(--secondary);">实用策略：<strong>不要在金币车上加速乘员训练</strong>（会消耗冗余经验）。攒着，等金币兑换活动（偶尔有 1 金 = 40 全局的优惠），一次性提取大量全局经验。</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>5. 车辆收益系数 — 为什么有的车"赚钱"</h2>
+
+    <p>每辆车都有一个隐藏的<strong>收益系数</strong>（Credit Coefficient），直接决定你打同样伤害能拿多少银币。</p>
+
+    <table>
+        <thead>
+            <tr><th>车辆类型</th><th>收益系数</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>金币车 Premium</strong></td>
+                <td>1.5-2.0×</td>
+                <td>银币收益最高的车。VIII 金币车是公认的"印钞机"。此外金币车还有隐藏的 +50% 乘员经验加成。</td>
+            </tr>
+            <tr>
+                <td><strong>特种车 Special</strong></td>
+                <td>1.0-1.2×</td>
+                <td>收益略高于普通银币车，但不如金币车。分房保护和特殊玩法是其主要卖点。</td>
+            </tr>
+            <tr>
+                <td><strong>X 级银币车</strong></td>
+                <td>0.8-1.0×</td>
+                <td>X 级车的收益系数被刻意压低。打同样伤害拿的银币比 VIII 金币车少 40-50%。</td>
+            </tr>
+            <tr>
+                <td><strong>银币车 Tier V-VIII</strong></td>
+                <td>1.0×（基准）</td>
+                <td>标准收益。V-VI 级维修便宜，净收入尚可。VIII 级维修贵而支出高，净收入降低。</td>
+            </tr>
+            <tr>
+                <td><strong>银币车 Tier I-IV</strong></td>
+                <td>0.5-0.8×</td>
+                <td>低阶车收益系数低。不适合打钱，仅用于练线和过渡。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h3>VIII 金币车 = 印钞机</h3>
+        <p style="margin-bottom:0;">一辆 VIII 金币车（如 Löwe、SU-130PM、Type 59）的银币收益系数约为 1.7×，加上高级账号的 +50%，一场 2000 伤害的局可以净赚 <strong>4-6 万银币</strong>（扣除维修和弹药后）。这是绝大多数玩家养 X 级车和打金弹的银币来源。</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>6. 高级账号 — 最值得的付费</h2>
+
+    <p>高级账号（Premium Account）提供两个核心加成：</p>
+
+    <div class="card-row">
+        <div class="card-col">
+            <h3>银币 +50%</h3>
+            <p>所有战斗银币收入 ×1.5。和金币车的收益系数叠加后，收益差距非常显著。</p>
+            <p style="font-size:0.85rem;color:var(--secondary);">公式：基础银币 × 车辆系数 × 高级账号 × 胜利加成。全叠加时可达基础值的 3-4 倍。</p>
+        </div>
+        <div class="card-col">
+            <h3>经验 +50%</h3>
+            <p>所有战斗经验和乘员经验 ×1.5。练线和练技能的速度直接提升 1.5 倍。</p>
+            <p style="font-size:0.85rem;color:var(--secondary);">和每日首胜 ×2、个人储备 ×2 叠加后，一局最高可达基础值的 5 倍。</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>高级账号的额外福利</h3>
+        <ul>
+            <li><strong>每日任务多一个：</strong>可多做一个日常任务，获得额外奖励。</li>
+            <li><strong>地图屏蔽多一个：</strong>从 1 张增加到 2 张（你可以屏蔽不喜欢或不擅长的地图）。</li>
+            <li><strong>组队加成：</strong>组队时获得额外的经验和银币加成（小队加成 +10-15%）。</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>7. 个人储备 — 限时加成卡</h2>
+
+    <p>个人储备（Personal Reserves）是通过任务、活动和战斗通行证获得的限时加成道具。使用后按<strong>真实时间</strong>消耗（离线也计时）。</p>
+
+    <table>
+        <thead>
+            <tr><th>储备类型</th><th>加成幅度</th><th>持续时长</th><th>使用建议</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>银币加成</strong></td>
+                <td>+25 / +50 / +100%</td>
+                <td>1-2 小时</td>
+                <td>集中在金币车上打钱时开启。最大化小时产出。</td>
+            </tr>
+            <tr>
+                <td><strong>战斗经验加成</strong></td>
+                <td>+50 / +100 / +200%</td>
+                <td>1-2 小时</td>
+                <td>练线时开启。选择你在集中练的那条线的车。</td>
+            </tr>
+            <tr>
+                <td><strong>乘员经验加成</strong></td>
+                <td>+100 / +200 / +300%</td>
+                <td>1-2 小时</td>
+                <td>练乘员技能时开启。配金币车 + 高级账号效果飞起。</td>
+            </tr>
+            <tr>
+                <td><strong>全局经验加成</strong></td>
+                <td>+100 / +200 / +300%</td>
+                <td>1 小时</td>
+                <td>需要大量全局经验时开启。注意：只加成 5% 自动转化部分，实际收益仍然有限。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>策略：</strong>不要在零碎时间开启储备（如只有 15 分钟空闲）。开了之后集中打 1-2 小时，最大化时间效率。离线不计战斗次数但计时——所以你开 1 小时储备后出门买东西，回来只剩 30 分钟了。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>8. 专项经济：军团战/要塞/排位赛</h2>
+
+    <table>
+        <thead>
+            <tr><th>模式</th><th>经济特点</th><th>收益</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>军团战 Clan Wars</strong></td>
+                <td>不消耗弹药和消耗品费用（军团承担）。维修费不免。</td>
+                <td>按胜场和表现获得金币。顶级军团一天可赚数百金币。</td>
+            </tr>
+            <tr>
+                <td><strong>要塞 Stronghold</strong></td>
+                <td>和个人战斗相同的消耗。但加成卡和军团奖励可抵消支出。</td>
+                <td>军团资源和工业资源。可转换成债券和银币。</td>
+            </tr>
+            <tr>
+                <td><strong>排位赛 Ranked</strong></td>
+                <td>标准消耗。高排位有债券奖励。</td>
+                <td>赛季末按段位获得债券 + 金币 + 特殊奖励。</td>
+            </tr>
+            <tr>
+                <td><strong>突袭 Onslaught</strong></td>
+                <td>金币弹和消耗品半价。维修费降低。</td>
+                <td>债券 + 专属 X 级金币车（达到特定段位）。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>9. 玩家经济路线图 — 从穷到富</h2>
+
+    <div class="card">
+        <h3>Phase 1：白手起家（0 金币）</h3>
+        <ol>
+            <li>稳定留在 V-VI 级 — 维修便宜，净收入为正。</li>
+            <li>只用小消耗品（小修 + 小急救 + 手动灭火器）。</li>
+            <li>少打甚至不打金币弹。用 AP 打弱点是省钱的核心技能。</li>
+            <li>参加一切活动/战令/任务 — 免费金币和加成卡是宝贵资源。</li>
+        </ol>
+    </div>
+
+    <div class="card">
+        <h3>Phase 2：有第一桶金（5000-10000 金币）</h3>
+        <ol>
+            <li>优先买高级账号（月卡约 2500 金）。+50% 收益的回报率最快。</li>
+            <li>第二优先：买一辆强力 VIII 金币车。这是你的印钞机。</li>
+            <li>用金币车打钱的收益养你的银币车线。</li>
+        </ol>
+    </div>
+
+    <div class="card">
+        <h3>Phase 3：经济自由（50000+ 金币 + 2000 万银币存款）</h3>
+        <ol>
+            <li>日常用大型消耗品和大给养不再犹豫。</li>
+            <li>可以大量使用金币弹（靠金币车打钱养）。</li>
+            <li>军团战和排位赛不再心疼支出。</li>
+            <li>活动期间可以大量提取全局经验以跳过白板期。</li>
+        </ol>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>10. 总结</h2>
+
+    <div class="card">
+        <ol>
+            <li><strong>银币来自伤害和点亮，不是人头。</strong>持续输出 > 收人头。</li>
+            <li><strong>金币弹是大支出。</strong>每发 4000 银币。不是每一发都需要金弹。</li>
+            <li><strong>VIII 金币车 + 高级账号 = 印钞机。</strong>这是打钱的最优组合。</li>
+            <li><strong>不要用金币换银币。</strong>汇率极差。打几场金币车就赚回来了。</li>
+            <li><strong>全局经验用金币提取。</strong>攒满一辆车的冗余经验，在兑换活动时一次性提取。</li>
+            <li><strong>个人储备集中使用。</strong>开了就一口气打 1-2 小时，别浪费在零碎时间上。</li>
+            <li><strong>活下来 = 省钱。</strong>车辆被摧毁的维修费是存活状态的 2-3 倍。</li>
+        </ol>
+    </div>
+
+    <div class="callout">
+        <strong>一句话总结：</strong>坦克世界的经济系统是一个"以车养车"的循环——金币车打钱养银币车练线，银币车到 X 级后再打债券买债券装备。理解这个循环，你永远不会缺银币。
+    </div>
+
+    <!-- ============================================================ -->
+    <hr>
+    <div class="footer">
+        <p>
+            <a href="../index.html">← 返回首页</a> &nbsp;·&nbsp;
+            <a href="06-equipment.html">← 上一板块：配件与补给</a> &nbsp;·&nbsp;
+            下一板块：<a href="08-tanks.html">载具系统 →</a>
+        </p>
+        <p style="margin-top:0.5rem;">内容整理自 <a href="https://wiki.wargaming.net/en/Economy">wiki.wargaming.net Economy</a></p>
+    </div>
+</div>
+
+<script>
+(function() {
+    var root = document.documentElement;
+    var lightBtn = document.getElementById('lightBtn');
+    var darkBtn = document.getElementById('darkBtn');
+    function setTheme(name) {
+        if (name === 'dark') {
+            root.style.setProperty('--bg', 'var(--dark-bg)');
+            root.style.setProperty('--text', 'var(--dark-text)');
+            root.style.setProperty('--link', 'var(--dark-link)');
+            root.style.setProperty('--accent', 'var(--dark-accent)');
+            root.style.setProperty('--secondary', 'var(--dark-secondary)');
+            root.style.setProperty('--border', 'var(--dark-border)');
+            root.style.setProperty('--card-bg', 'var(--dark-card-bg)');
+            darkBtn.classList.add('active'); lightBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'dark');
+        } else {
+            root.style.setProperty('--bg', 'var(--light-bg)');
+            root.style.setProperty('--text', 'var(--light-text)');
+            root.style.setProperty('--link', 'var(--light-link)');
+            root.style.setProperty('--accent', 'var(--light-accent)');
+            root.style.setProperty('--secondary', 'var(--light-secondary)');
+            root.style.setProperty('--border', 'var(--light-border)');
+            root.style.setProperty('--card-bg', 'var(--light-card-bg)');
+            lightBtn.classList.add('active'); darkBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'light');
+        }
+    }
+    var saved = localStorage.getItem('wot-theme');
+    setTheme(saved === 'dark' ? 'dark' : 'light');
+    lightBtn.addEventListener('click', function() { setTheme('light'); });
+    darkBtn.addEventListener('click', function() { setTheme('dark'); });
+})();
+</script>
+</body>
+</html>
