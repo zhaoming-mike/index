@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>乘员系统 · 坦克世界机制精讲</title>
+    <link rel="stylesheet" href="../assets/wot-style.css">
+</head>
+<body>
+<div class="container">
+    <div class="nav-bar">
+        <div>
+            <h1>乘员系统</h1>
+            <p class="subtitle">技能与特长 · 训练与重置 · 角色分工 — 你的乘员不只是车里的摆设</p>
+        </div>
+        <span class="badge badge-accent">P1 · 核心机制</span>
+    </div>
+
+    <div class="theme-bar">
+        <button class="theme-btn active" id="lightBtn">🌿 浅色·绿黑高效</button>
+        <button class="theme-btn" id="darkBtn">🌲 深色·绿白高效</button>
+    </div>
+
+    <p>乘员系统是坦克世界最容易被低估的深度机制。一个满技能乘组 vs 白板乘组的差距，<strong>不亚于白板车 vs 完全体</strong>。更短装填、更远视野、更快修理——这些隐性优势累积起来决定胜负。</p>
+
+    <!-- ============================================================ -->
+    <h2>1. 乘员角色 — 车里的五个人</h2>
+
+    <p>大多数坦克有 4-6 名乘员，每人承担不同职责。理解每个角色的技能池是正确加点的前提。</p>
+
+    <table>
+        <thead>
+            <tr><th>角色</th><th>核心职责</th><th>受伤时的影响</th><th>代表技能（S=即时生效 / P=满100%触发）</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>车长</strong></td>
+                <td>视野范围、全员协调</td>
+                <td>视野降低，其他乘员效率下降</td>
+                <td>第六感(P) · 侦察(S) · 鹰眼(P) · 多面手(P) · 导师(S)</td>
+            </tr>
+            <tr>
+                <td><strong>炮手</strong></td>
+                <td>精度、瞄准速度、炮塔转速</td>
+                <td>精度下降，瞄准变慢</td>
+                <td>致命一击(P) · 军械师(S) · 炮术大师(S) · 目标锁定(P)</td>
+            </tr>
+            <tr>
+                <td><strong>驾驶员</strong></td>
+                <td>移动速度、转向速度</td>
+                <td>加速和转向变慢</td>
+                <td>平稳驾驶(S) · 越野(S) · 离合器制动(S) · 预防性维护(P)</td>
+            </tr>
+            <tr>
+                <td><strong>通信兵</strong></td>
+                <td>通讯距离、视野辅助</td>
+                <td>通讯距离缩短</td>
+                <td>态势感知(S) · 信号增强(S) · 中继(S) · 最终反击(P)</td>
+            </tr>
+            <tr>
+                <td><strong>装填手</strong></td>
+                <td>装填速度</td>
+                <td>装填时间大幅增加</td>
+                <td>弹药规则(S) · 爆发装填(S) · 安全装载(P) · 肾上腺素(P) · 直觉(P)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>注意：</strong>部分车辆的乘员身兼多职（如车长兼任通信兵）。这时该乘员会同时拥有两个角色的技能池，但第六感等特长仍需该乘员存活才能触发。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>2. 熟练度系统 — 一切的基础</h2>
+
+    <p>每个乘员都有一个<strong>基础熟练度</strong>（50%-100%），它直接影响所有战斗表现。熟练度低于 100% 时，车辆性能按比例打折。</p>
+
+    <div class="card">
+        <h3>熟练度对性能的影响</h3>
+        <p style="margin-bottom:0.5rem;">以 75% 熟练度的炮手为例：</p>
+        <ul>
+            <li>装填时间 +5%（比面板慢）</li>
+            <li>瞄准时间 +5%</li>
+            <li>精度下降约 5%</li>
+            <li>炮塔转速下降约 5%</li>
+            <li>视野范围缩小</li>
+            <li>移动和转向性能减弱</li>
+        </ul>
+        <p style="font-size:0.85rem;color:var(--secondary);margin-bottom:0;">简言之：<strong>白板乘员 = 车辆性能打八折</strong>。优先把熟练度拉到 100% 比先学技能更重要。</p>
+    </div>
+
+    <h3>2.1 训练选项 — 三种起步方式</h3>
+
+    <table>
+        <thead>
+            <tr><th>训练方式</th><th>费用</th><th>熟练度</th><th>适用场景</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>军校</strong></td>
+                <td>200 金币/人</td>
+                <td>100%</td>
+                <td>金币充裕时首选。省时省力，直接满状态出战。</td>
+            </tr>
+            <tr>
+                <td><strong>团校</strong></td>
+                <td>2万 银币/人</td>
+                <td>75%</td>
+                <td>银币玩家的标准选择。约 20-30 场可练到 100%。</td>
+            </tr>
+            <tr>
+                <td><strong>速成</strong></td>
+                <td>免费</td>
+                <td>50%</td>
+                <td>不推荐。从 50% 到 100% 需要大量场次，游戏体验极差。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>给新手的建议：</strong>至少选团校（2万银）。50% 熟练度相当于全程残废——你的装填比别人慢半秒，视野比别人短一截，还没看到敌人就被点亮了。
+    </div>
+
+    <h3>2.2 转车惩罚</h3>
+
+    <p>乘员从一辆车转到另一辆车时，熟练度会受到惩罚：</p>
+
+    <table>
+        <thead>
+            <tr><th>转车类型</th><th>惩罚</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>同车系、同类型（如 IS → IS-3）</td><td>-25% 熟练度</td><td>需重新训练。用银币训练可回到 75%，金币训练回 100%。</td></tr>
+            <tr><td>同车系、不同类型（如 HT 乘员转 MT）</td><td>-50% 熟练度</td><td>惩罚极大，极不推荐。除非用金币全额覆盖。</td></tr>
+            <tr><td>跨车系（如苏系→德系）</td><td>不可转</td><td>不同国家的乘员无法互转。</td></tr>
+            <tr><td>金币车 / 特种车</td><td>无惩罚</td><td>同类型同国家的乘员可免费调入金币车，不损失熟练度。这也是金币车的隐藏价值之一。</td></tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h3>金币车的隐藏价值：乘员训练加速器</h3>
+        <p style="margin-bottom:0;">把主力乘员调进同类型金币车出战，该乘员<strong>享受金币车的经验加成</strong>且不损失熟练度。这意味着你可以用金币车高效训练乘员技能——对练满一个 5-6 技能的乘组至关重要。</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>3. 技能 (Skills) vs 特长 (Perks) — 核心区别</h2>
+
+    <p>这是乘员系统中最常被搞混的概念。两者机制完全不同：</p>
+
+    <div class="card-row">
+        <div class="card-col">
+            <h3>技能 Skills</h3>
+            <p>从 1% 起<strong>即时生效</strong>，按比例增强。修到 50% 就有 50% 的效果。</p>
+            <p style="font-size:0.85rem;color:var(--secondary);">例：修理（Repair）50% → 修理时间减半。<br>隐蔽（Camo）80% → 获得 80% 的隐蔽加成。</p>
+        </div>
+        <div class="card-col">
+            <h3>特长 Perks</h3>
+            <p>必须练到 <strong>100% 才激活</strong>，0-99% 期间完全无效。激活后效果全量释放。</p>
+            <p style="font-size:0.85rem;color:var(--secondary);">例：第六感 99% = 没有任何效果。<br>第六感 100% = 被点亮 3 秒后亮灯。</p>
+        </div>
+    </div>
+
+    <div class="callout">
+        <strong>加点策略（重要）：</strong>第一个技能位建议选 <strong>修理</strong>（技能，即时生效）而不是第六感（特长，100% 才触发）。修理从 1% 就开始帮你加速修履带。等修理满 100% 后，<strong>用银币重置</strong>，把第六感换到第一格——这样 100% 的修理不会浪费，直接转入第二格继续生效。这叫"先技能后特长"。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>4. 通用技能与特长</h2>
+
+    <p>以下三项是<strong>所有角色</strong>都可以学习的：</p>
+
+    <table>
+        <thead>
+            <tr><th>名称</th><th>类型</th><th>效果</th><th>优先级</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>修理 Repair</strong></td>
+                <td>技能 (S)</td>
+                <td>加快模块修理速度。五人全满时，断带修理时间从 ~7s 缩至 ~2s。</td>
+                <td>⭐ 必学</td>
+            </tr>
+            <tr>
+                <td><strong>隐蔽 Camouflage</strong></td>
+                <td>技能 (S)</td>
+                <td>降低静止和移动隐蔽值。五人全满时，静止隐蔽值约提升 80%。</td>
+                <td>视车种</td>
+            </tr>
+            <tr>
+                <td><strong>灭火 Firefighting</strong></td>
+                <td>技能 (S)</td>
+                <td>缩短起火持续时间，减少火烧伤害。五人全满约缩短 50%。</td>
+                <td>低</td>
+            </tr>
+            <tr>
+                <td><strong>兄弟连 BIA</strong></td>
+                <td>特长 (P)</td>
+                <td>全员熟练度 +5%（等效通风）。<strong>必须全员 100% 才生效</strong>，一人没满全队无效。</td>
+                <td>⭐ 第二/三技能</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h3>修理 vs 隐蔽：按车种选择第一技能</h3>
+        <ul>
+            <li><strong>HT 重型坦克：</strong>修理优先。断带 = 死亡。2 秒修好履带是生存底线。</li>
+            <li><strong>MT 中型坦克：</strong>修理优先。中坦需要频繁换位，断带后快速恢复机动是关键。</li>
+            <li><strong>LT 轻型坦克：</strong>隐蔽优先。你的生存完全依赖不被发现。</li>
+            <li><strong>TD 坦克歼击车：</strong>隐蔽优先（无炮塔 TD）或修理优先（突击 TD）。</li>
+            <li><strong>SPG 自行火炮：</strong>隐蔽优先。被发现意味着死亡。</li>
+        </ul>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>5. 各角色专属技能与特长</h2>
+
+    <h3>5.1 车长 — 最重要的乘员</h3>
+
+    <table>
+        <thead>
+            <tr><th>名称</th><th>类型</th><th>效果</th><th>推荐度</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>第六感 Sixth Sense</strong></td>
+                <td>特长 (P)</td>
+                <td>被敌人点亮后 3 秒，屏幕上出现灯泡图标。游戏中最关键的信息提示。</td>
+                <td>⭐⭐⭐ 第一特长</td>
+            </tr>
+            <tr>
+                <td><strong>侦察 Recon</strong></td>
+                <td>技能 (S)</td>
+                <td>视野范围 +2%（配合高光/炮队镜效果更显著）。</td>
+                <td>⭐⭐ LT/TD 必学</td>
+            </tr>
+            <tr>
+                <td><strong>鹰眼 Eagle Eye</strong></td>
+                <td>特长 (P)</td>
+                <td>瞄准敌人 4 秒后显示其受损模块（弹药架/发动机/乘员等）。</td>
+                <td>⭐ 高手向</td>
+            </tr>
+            <tr>
+                <td><strong>多面手 Jack of All Trades</strong></td>
+                <td>特长 (P)</td>
+                <td>其他乘员阵亡时，车长代替其职能（效率降低）。相当于给每个乘员买了一份保险。</td>
+                <td>⭐ HT/MT 推荐</td>
+            </tr>
+            <tr>
+                <td><strong>导师 Mentor</strong></td>
+                <td>技能 (S)</td>
+                <td>其他乘员获得的经验 +10%（车长本人除外）。长期练乘员的加速器。</td>
+                <td>⭐ 长期玩家</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>第六感是必学的。</strong>没有第六感，你永远不知道敌人是否看见了你。3 秒延迟意味着你需要在暴露后立即做出反应——发现灯泡亮起，立刻找掩体。
+    </div>
+
+    <h3>5.2 炮手 — 输出核心</h3>
+
+    <table>
+        <thead>
+            <tr><th>名称</th><th>类型</th><th>效果</th><th>推荐度</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>致命一击 Deadeye</strong></td>
+                <td>特长 (P)</td>
+                <td>AP/APCR/HEAT 击中敌方模块时，模块伤害 +3%。提升打坏弹药架/发动机的概率。</td>
+                <td>⭐⭐ 输出位</td>
+            </tr>
+            <tr>
+                <td><strong>军械师 Armorer</strong></td>
+                <td>技能 (S)</td>
+                <td>受损火炮的精度惩罚降低 20%。炮管被打黄时尤其有用。</td>
+                <td>⭐⭐</td>
+            </tr>
+            <tr>
+                <td><strong>炮术大师 Snap Shot</strong></td>
+                <td>技能 (S)</td>
+                <td>炮塔旋转时精度惩罚降低 7.5%。移动射击/甩炮时手感提升明显。</td>
+                <td>⭐⭐⭐ 必学</td>
+            </tr>
+            <tr>
+                <td><strong>目标锁定 Designated Target</strong></td>
+                <td>特长 (P)</td>
+                <td>被你点亮的敌人，从你视野中消失后额外多亮 2 秒。团队侦察的强力技能。</td>
+                <td>⭐⭐ LT/TD 推荐</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>5.3 驾驶员 — 操控感的关键</h3>
+
+    <table>
+        <thead>
+            <tr><th>名称</th><th>类型</th><th>效果</th><th>推荐度</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>平稳驾驶 Smooth Ride</strong></td>
+                <td>技能 (S)</td>
+                <td>行驶中精度惩罚降低 4%。和垂稳叠加效果极佳。</td>
+                <td>⭐⭐⭐ 必学</td>
+            </tr>
+            <tr>
+                <td><strong>越野 Off-Road Driving</strong></td>
+                <td>技能 (S)</td>
+                <td>在软地和中等地形的通过性提升 10%/2.5%。加速和转向更快。</td>
+                <td>⭐⭐⭐ 必学</td>
+            </tr>
+            <tr>
+                <td><strong>离合器制动 Clutch Braking</strong></td>
+                <td>技能 (S)</td>
+                <td>车体转向速度 +5%。无炮塔 TD 和 HT 近战缠斗时价值极高。</td>
+                <td>⭐⭐ TD/HT 推荐</td>
+            </tr>
+            <tr>
+                <td><strong>冲撞 Controlled Impact</strong></td>
+                <td>技能 (S)</td>
+                <td>撞击伤害 +15%，自身受到的撞击伤害 -15%。</td>
+                <td>⭐ 特定车型</td>
+            </tr>
+            <tr>
+                <td><strong>预防性维护 Preventative Maintenance</strong></td>
+                <td>特长 (P)</td>
+                <td>发动机起火概率 -25%。油箱被击中后发动机着火的概率显著降低。</td>
+                <td>⭐⭐ 德系/苏系推荐</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h3>越野 + 平稳驾驶 = 手感质变</h3>
+        <p style="margin-bottom:0;">这两个技能叠加等效于你的坦克获得了一个小型垂稳 + 涡轮。移动中开炮更准、过软地不掉速——对需要频繁转场的 MT 和需要快速入位的 TD 来说是质变。</p>
+    </div>
+
+    <h3>5.4 通信兵 — 被低估的角色</h3>
+
+    <table>
+        <thead>
+            <tr><th>名称</th><th>类型</th><th>效果</th><th>推荐度</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>态势感知 Situational Awareness</strong></td>
+                <td>技能 (S)</td>
+                <td>视野范围 +3%。和侦察叠加可 +5%，配合高光效果显著。</td>
+                <td>⭐⭐⭐ 必学</td>
+            </tr>
+            <tr>
+                <td><strong>信号增强 Signal Boosting</strong></td>
+                <td>技能 (S)</td>
+                <td>通讯距离 +20%。在低阶车和大地图上避免超出通讯范围。</td>
+                <td>⭐</td>
+            </tr>
+            <tr>
+                <td><strong>中继 Relay</strong></td>
+                <td>技能 (S)</td>
+                <td>队友的通讯距离在你通讯范围内时得到延长。团队辅助技能。</td>
+                <td>⭐</td>
+            </tr>
+            <tr>
+                <td><strong>最终反击 Last Stand</strong></td>
+                <td>特长 (P)</td>
+                <td>通信兵阵亡后，通讯距离仍保持 50%。仅在大地图上有价值。</td>
+                <td>⭐ 特殊用途</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>5.5 装填手 — DPM 的最后一块拼图</h3>
+
+    <table>
+        <thead>
+            <tr><th>名称</th><th>类型</th><th>效果</th><th>推荐度</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>弹药规则 Safe Stowage</strong></td>
+                <td>技能 (S)→特长</td>
+                <td>弹药架血量 +12.5%。降低被击中后弹药架殉爆的概率。</td>
+                <td>⭐⭐⭐ 必学</td>
+            </tr>
+            <tr>
+                <td><strong>爆发装填 Adrenaline Rush</strong></td>
+                <td>技能 (S)</td>
+                <td>血量低于 10% 时，装填速度 +9.1%。残局翻盘利器。</td>
+                <td>⭐⭐</td>
+            </tr>
+            <tr>
+                <td><strong>安全装载 Safe Stowage</strong></td>
+                <td>特长 (P)</td>
+                <td>弹药架血量 +25%。（注意：此处指特长版本，叠加后效果更强。）</td>
+                <td>⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td><strong>肾上腺素 Adrenaline Rush</strong></td>
+                <td>特长 (P)</td>
+                <td>血量低于 10% 时，装填速度提升。</td>
+                <td>⭐⭐</td>
+            </tr>
+            <tr>
+                <td><strong>直觉 Intuition</strong></td>
+                <td>特长 (P)</td>
+                <td>切换弹药类型时，如果炮膛里已有炮弹，有概率直接完成切换（无需重新装填）。双弹仓和多弹种配车的神技。</td>
+                <td>⭐⭐⭐ 双弹仓车必学</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>直觉 (Intuition) 的价值：</strong>在需要频繁切换 AP/HEAT/Gold 弹的车辆上（如双弹仓的 IS-2-II），直觉让你在发现机会时瞬间切弹。没有直觉，你只能先打掉炮膛里的那发再装新弹——可能错过关键窗口。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>6. 重置技能 — 洗点策略</h2>
+
+    <p>你可以随时重置乘员技能，但经验会有折损：</p>
+
+    <table>
+        <thead>
+            <tr><th>重置方式</th><th>经验保留</th><th>适用场景</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>免费重置</td><td><strong>80%</strong></td><td>不推荐。损失 20% 总经验在高技能乘员上代价巨大。</td>
+            </tr>
+            <tr><td>银币重置</td><td><strong>90%</strong></td>
+            <td>标准选择。10% 的损失在可接受范围内。推荐在技能升级时顺便调整。</td>
+            </tr>
+            <tr><td>金币重置</td><td><strong>100%</strong></td>
+            <td>金币充裕时使用。零损失，可以随意调整战术配置。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h3>"先技能后特长"的洗点流程</h3>
+        <ol>
+            <li>第一格选择<strong>修理</strong>（技能），从 1% 到 100% 都有效。</li>
+            <li>修理满 100% 后，开始练第二格<strong>第六感</strong>（特长）。</li>
+            <li>当第二格练到约 40% 时，<strong>用银币重置</strong>（损失 10% 经验）。</li>
+            <li>重置后，将<strong>第六感放到第一格</strong>（100%，立即激活），<strong>修理放到第二格</strong>（约 90%，继续生效）。</li>
+            <li>达成目标：第六感激活 + 修理仍然高位运行。</li>
+        </ol>
+        <p style="margin-bottom:0;font-size:0.85rem;color:var(--secondary);">同样的策略适用于 BIA（兄弟连）——先在第二格练修理/隐蔽，等 BIA 练到 100% 再重置，把 BIA 放到第一格。</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>7. 推荐加点方案</h2>
+
+    <table>
+        <thead>
+            <tr><th>车种</th><th>第1技能</th><th>第2技能</th><th>第3技能</th><th>备注</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>HT</strong></td>
+                <td>修理 (全员) / 第六感 (车长)</td>
+                <td>BIA (全员)</td>
+                <td>越野+平稳驾驶 (驾驶员) / 炮术大师 (炮手)</td>
+                <td>先用修理填第一格，满 100% 后洗成第六感。BIA 必学但放在第二/三格。</td>
+            </tr>
+            <tr>
+                <td><strong>MT</strong></td>
+                <td>修理 (全员) / 第六感 (车长)</td>
+                <td>BIA (全员)</td>
+                <td>平稳驾驶+越野 / 炮术大师 / 态势感知</td>
+                <td>中坦需要机动和视野。态势感知+侦察的 +5% 视野可以让你在关键对位中先亮敌人。</td>
+            </tr>
+            <tr>
+                <td><strong>LT</strong></td>
+                <td>隐蔽 (全员) / 第六感 (车长)</td>
+                <td>侦察+态势感知 (视野最大化)</td>
+                <td>BIA (全员)</td>
+                <td>轻坦的第一要务是不被发现。隐蔽 + 视野必须拉满。</td>
+            </tr>
+            <tr>
+                <td><strong>TD (隐蔽型)</strong></td>
+                <td>隐蔽 (全员) / 第六感 (车长)</td>
+                <td>BIA (全员)</td>
+                <td>炮术大师 / 越野 / 离合器制动</td>
+                <td>无炮塔 TD 尤其需要离合器制动（转向速度决定生死）。</td>
+            </tr>
+            <tr>
+                <td><strong>TD (突击型)</strong></td>
+                <td>修理 (全员) / 第六感 (车长)</td>
+                <td>BIA (全员)</td>
+                <td>平稳驾驶 / 弹药规则 / 越野</td>
+                <td>突击 TD 需要在前线存活，修理比隐蔽重要。</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>8. 常见误区</h2>
+
+    <div class="card-row">
+        <div class="card-col">
+            <h3>误区 1：第六感第一个学</h3>
+            <p>第六感是特长，0-99% 期间完全无效。第一个技能位选它会浪费大量时间。正确做法是先在第一个位放修理/隐蔽（技能），练满后再洗点换位。</p>
+        </div>
+        <div class="card-col">
+            <h3>误区 2：BIA 凑不齐就不学</h3>
+            <p>BIA 要求全员满 100% 才触发。如果你有 4 个乘员练满但第 5 个没满，整个 BIA 都不生效。要么全员一起切，要么别碰。</p>
+        </div>
+    </div>
+    <div class="card-row">
+        <div class="card-col">
+            <h3>误区 3：忽视通信兵</h3>
+            <p>通信兵的<strong>态势感知</strong>是全员最强的视野技能（+3%，远超车长侦察的 +2%）。在视野决定胜负的 LT/TD 上，这个技能价值极高。</p>
+        </div>
+        <div class="card-col">
+            <h3>误区 4：金币车无所谓乘员</h3>
+            <p>金币车无转车惩罚，正是你训练主力乘员的最佳工具。把主战车的乘员调入金币车打首胜，乘员经验加成叠加后练技能速度快一倍。</p>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>9. 总结：乘员培养路线图</h2>
+
+    <div class="card">
+        <ol>
+            <li><strong>起步：</strong>新乘员至少选团校（2 万银币，75% 熟练度）。别选速成。</li>
+            <li><strong>第一技能：</strong>按车种选修理（HT/MT/突击TD）或隐蔽（LT/隐蔽TD/SPG）。<strong>不要在第一个技能位放特长。</strong></li>
+            <li><strong>洗点换位：</strong>第一技能练满后，用银币重置，把第六感换到第一格。修理/隐蔽去第二格。</li>
+            <li><strong>第二/三技能：</strong>全员同步练 BIA。BIA 满后你的车辆性能整体提升 5%。</li>
+            <li><strong>专属技能：</strong>炮手 → 炮术大师，驾驶员 → 越野+平稳驾驶，通信兵 → 态势感知，装填手 → 弹药规则。</li>
+            <li><strong>长期：</strong>用金币车训练乘员，用导师（车长技能）加速全员成长。</li>
+        </ol>
+    </div>
+
+    <div class="callout">
+        <strong>一句话总结：</strong>乘员是会增值的投资。一个 5 技能的乘组能让白板车打出完全体的效果——而一个白板乘组会让完全体开起来像白板车。
+    </div>
+
+    <!-- ============================================================ -->
+    <hr>
+    <div class="footer">
+        <p>
+            <a href="../index.html">← 返回首页</a> &nbsp;·&nbsp;
+            <a href="03-shells.html">← 上一板块：炮弹与穿深</a> &nbsp;·&nbsp;
+            下一板块：<a href="05-matchmaking.html">匹配机制 →</a>
+        </p>
+        <p style="margin-top:0.5rem;">内容整理自 <a href="https://wiki.wargaming.net/en/Crew">wiki.wargaming.net Crew</a></p>
+    </div>
+</div>
+
+<script>
+(function() {
+    var root = document.documentElement;
+    var lightBtn = document.getElementById('lightBtn');
+    var darkBtn = document.getElementById('darkBtn');
+    function setTheme(name) {
+        if (name === 'dark') {
+            root.style.setProperty('--bg', 'var(--dark-bg)');
+            root.style.setProperty('--text', 'var(--dark-text)');
+            root.style.setProperty('--link', 'var(--dark-link)');
+            root.style.setProperty('--accent', 'var(--dark-accent)');
+            root.style.setProperty('--secondary', 'var(--dark-secondary)');
+            root.style.setProperty('--border', 'var(--dark-border)');
+            root.style.setProperty('--card-bg', 'var(--dark-card-bg)');
+            darkBtn.classList.add('active'); lightBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'dark');
+        } else {
+            root.style.setProperty('--bg', 'var(--light-bg)');
+            root.style.setProperty('--text', 'var(--light-text)');
+            root.style.setProperty('--link', 'var(--light-link)');
+            root.style.setProperty('--accent', 'var(--light-accent)');
+            root.style.setProperty('--secondary', 'var(--light-secondary)');
+            root.style.setProperty('--border', 'var(--light-border)');
+            root.style.setProperty('--card-bg', 'var(--light-card-bg)');
+            lightBtn.classList.add('active'); darkBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'light');
+        }
+    }
+    var saved = localStorage.getItem('wot-theme');
+    setTheme(saved === 'dark' ? 'dark' : 'light');
+    lightBtn.addEventListener('click', function() { setTheme('light'); });
+    darkBtn.addEventListener('click', function() { setTheme('dark'); });
+})();
+</script>
+</body>
+</html>
