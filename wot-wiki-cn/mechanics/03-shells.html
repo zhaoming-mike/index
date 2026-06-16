@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>炮弹与穿深 · 坦克世界机制精讲</title>
+    <link rel="stylesheet" href="../assets/wot-style.css">
+</head>
+<body>
+<div class="container">
+    <div class="nav-bar">
+        <div>
+            <h1>炮弹与穿深</h1>
+            <p class="subtitle">AP / APCR / HEAT / HE / HESH — 你打出去的到底是什么</p>
+        </div>
+        <span class="badge badge-accent">P1 · 机制精讲</span>
+    </div>
+
+    <div class="theme-bar">
+        <button class="theme-btn active" id="lightBtn">🌿 浅色·绿黑高效</button>
+        <button class="theme-btn" id="darkBtn">🌲 深色·绿白高效</button>
+    </div>
+
+    <p>理解炮弹特性是理解装甲机制的另外一面。你打出去的不是一个"数字"，而是一颗有弹道、有质量、有速度的金属块或射流。不同炮弹在同一辆敌人面前，结果可能天差地别。</p>
+
+    <!-- ============================================================ -->
+    <h2>1. 五种炮弹总览</h2>
+
+    <table>
+        <thead>
+            <tr><th>弹种</th><th>简称</th><th>核心原理</th><th>一句话定位</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>穿甲弹</strong></td>
+                <td>AP</td>
+                <td>动能穿透，靠质量和速度硬砸穿装甲</td>
+                <td>最均衡的通用弹，使用成本最低</td>
+            </tr>
+            <tr>
+                <td><strong>硬芯穿甲弹</strong></td>
+                <td>APCR</td>
+                <td>次口径弹芯，高初速、高穿深</td>
+                <td>穿深高但转正差，打垂直面理想</td>
+            </tr>
+            <tr>
+                <td><strong>破甲弹</strong></td>
+                <td>HEAT</td>
+                <td>化学能金属射流，不依赖速度</td>
+                <td>穿深不随距离衰减，但被间隙装甲克制</td>
+            </tr>
+            <tr>
+                <td><strong>高爆弹</strong></td>
+                <td>HE</td>
+                <td>爆炸破片和冲击波伤害</td>
+                <td>不穿也能蹭血，打脆皮和收人头专用</td>
+            </tr>
+            <tr>
+                <td><strong>碎甲弹</strong></td>
+                <td>HESH</td>
+                <td>塑性炸药贴附装甲后引爆，内壁崩落</td>
+                <td>不判跳弹，对倾斜装甲有奇效</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>2. 核心属性对比</h2>
+
+    <table>
+        <thead>
+            <tr><th>属性</th><th>AP</th><th>APCR</th><th>HEAT</th><th>HE</th><th>HESH</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>转正角</strong></td><td>5°</td><td>2°</td><td>0°</td><td>—</td><td>—</td></tr>
+            <tr><td><strong>跳弹角</strong></td><td>70°+</td><td>70°+</td><td>85°+</td><td>—</td><td>—</td></tr>
+            <tr><td><strong>碾压机制</strong></td><td>✅</td><td>✅</td><td>❌</td><td>—</td><td>—</td></tr>
+            <tr><td><strong>距离衰减</strong></td><td>✅ 是</td><td>✅ 是（更大）</td><td>❌ 否</td><td>—</td><td>❌ 否</td></tr>
+            <tr><td><strong>间隙装甲</strong></td><td>穿深衰减</td><td>穿深衰减</td><td><strong>提前引爆</strong></td><td>—</td><td>接触引爆</td></tr>
+            <tr><td><strong>弹速</strong></td><td>中等</td><td>快</td><td>慢</td><td>慢</td><td>慢</td></tr>
+            <tr><td><strong>每发成本</strong></td><td>银币</td><td>较高</td><td>高（金币弹）</td><td>低</td><td>高</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>3. AP — 最均衡的通用弹</h2>
+
+    <div class="card-row">
+        <div class="card-col">
+            <h3>优势</h3>
+            <ul>
+                <li>5° 转正，对倾斜装甲效果最好</li>
+                <li>二倍/三倍口径碾压机制</li>
+                <li>弹速适中，预瞄容错大</li>
+                <li>成本最低，适合日常使用</li>
+            </ul>
+        </div>
+        <div class="card-col">
+            <h3>劣势</h3>
+            <ul>
+                <li>穿深通常低于 APCR/HEAT</li>
+                <li>距离衰减不可忽略</li>
+                <li>70°+ 自动跳弹</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="callout">
+        <strong>最佳场景：</strong>中近距离打倾斜装甲目标。AP 的 5° 转正 + 碾压机制使它在对抗苏系倾斜装甲时比 APCR 表现更好。如果你面对一辆摆角度的 IS-7，用 AP 打首下比 APCR 更可靠。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>4. APCR — 高穿深的代价</h2>
+
+    <p>APCR 是 AP 的"升级版"——次口径弹芯带来更高的初速和穿深，但付出了转正和衰减的代价：</p>
+
+    <div class="card">
+        <h3>APCR 的三大隐藏劣势</h3>
+        <ul>
+            <li><strong>转正仅 2°：</strong>对 60° 倾斜装甲，APCR 等效计算比 AP 多约 7% 的装甲厚度。穿深数字高不一定实际效果更好。</li>
+            <li><strong>距离衰减更大：</strong>APCR 从 0m 到 500m 的穿深损失通常比 AP 多 20-30mm。超远距离作战时优势大幅缩水。</li>
+            <li><strong>对角度更敏感：</strong>同样是 60° 倾斜，AP 能打穿而 APCR 跳弹的情况屡见不鲜。</li>
+        </ul>
+    </div>
+
+    <div class="callout">
+        <strong>简单法则：</strong>打垂直装甲 → APCR；打倾斜装甲 → AP。高穿深不等于高击穿率。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>5. HEAT — 化学能的倔强</h2>
+
+    <p>HEAT 的金属射流不依赖炮弹动能，因此有一整套不同于 AP/APCR 的规则：</p>
+
+    <table>
+        <thead>
+            <tr><th>特性</th><th>规则</th><th>实战含义</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>无转正</td><td>0°</td><td>对倾斜装甲穿深较差。打倾斜面不如 AP。</td></tr>
+            <tr><td>跳弹角 85°</td><td>更宽容</td><td>能打 AP/APCR 必定跳弹的大角度。HEAT 打不了的角度极少。</td></tr>
+            <tr><td>无碾压</td><td>不参与</td><td>HEAT 的口径和装甲厚度之间无碾压判定。</td></tr>
+            <tr><td>无距离衰减</td><td>穿深恒定</td><td>500m 外 HEAT 穿深和贴脸一样。远程狙击时 HEAT 有独特优势。</td></tr>
+            <tr><td>间隙装甲克制</td><td>提前引爆</td><td>触到履带/裙甲/间隙立即引爆，射流在到达主装前已经发散。打有裙甲的车尽量用 AP/APCR。</td></tr>
+            <tr><td>弹速慢</td><td>需更多预瞄</td><td>打移动靶命中率低。</td></tr>
+        </tbody>
+    </table>
+
+    <!-- ============================================================ -->
+    <h2>6. 碾压机制联动</h2>
+
+    <p>炮弹口径是与装甲厚度联动的关键变量（<strong>仅 AP/APCR 参与</strong>）：</p>
+
+    <table>
+        <thead>
+            <tr><th>条件</th><th>效果</th><th>示例</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>口径 &gt; 装甲 × 2</td>
+                <td>转正角大幅增加</td>
+                <td>152mm 炮打 70mm 侧面，等效大幅降低</td>
+            </tr>
+            <tr>
+                <td>口径 &gt; 装甲 × 3</td>
+                <td><strong>不触发跳弹判定</strong></td>
+                <td>120mm 炮打 30mm 顶盖，任何角度都能穿</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>口径选择内化：</strong>大管子（150mm+）的 HEAT 弹伤害高，但没有碾压。大管子打 AP 才有碾压。因此，一辆车三种弹的配比和场景选择，比单纯的"穿深数字"重要得多。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>7. HE / HESH — 不穿也能打</h2>
+
+    <div class="card-row">
+        <div class="card-col">
+            <h3>HE 高爆弹</h3>
+            <ul>
+                <li>不参与穿深-倾角-跳弹系统</li>
+                <li>命中后计算爆炸溅射伤害</li>
+                <li>打厚甲目标只能蹭几十点血</li>
+                <li>打敞篷/薄皮车可满伤</li>
+                <li>可炸毁模块、伤亡乘员</li>
+                <li>大口径 HE（150mm+）打脆皮甚至能秒杀</li>
+            </ul>
+        </div>
+        <div class="card-col">
+            <h3>HESH 碎甲弹</h3>
+            <ul>
+                <li>塑性炸药贴附装甲后引爆</li>
+                <li>内壁崩落的伤害机制，<strong>不受跳弹判定</strong></li>
+                <li>对倾斜装甲不衰减（不像 AP/APCR）</li>
+                <li>不触发碾压但也不跳弹</li>
+                <li>间隙装甲和履带会触发提前引爆</li>
+                <li>英系中高级车的特色弹种</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>8. 穿深衰减曲线</h2>
+
+    <table>
+        <thead>
+            <tr><th>弹种</th><th>0m</th><th>100m</th><th>300m</th><th>500m</th><th>规律</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>AP（中等衰减）</td><td>100%</td><td>~97%</td><td>~91%</td><td>~85%</td><td>线性衰减</td></tr>
+            <tr><td>APCR（快速衰减）</td><td>100%</td><td>~95%</td><td>~85%</td><td>~75%</td><td>衰减比 AP 快约 1.5~2 倍</td></tr>
+            <tr><td>HEAT</td><td>100%</td><td>100%</td><td>100%</td><td>100%</td><td>无衰减</td></tr>
+            <tr><td>HE</td><td>—</td><td>—</td><td>—</td><td>—</td><td>不适用穿深系统</td></tr>
+        </tbody>
+    </table>
+
+    <div class="callout">
+        <strong>远距离决策：</strong>300m 外 APCR 穿深已经大幅衰减，这时 HEAT 的"恒定穿深"优势凸显。但 HEAT 弹速慢需要预瞄，这个取舍取决于你的炮控水平和目标机动性。
+    </div>
+
+    <!-- ============================================================ -->
+    <h2>9. 弹种选择决策树</h2>
+
+    <div class="card">
+        <ol>
+            <li><strong>目标是什么车？</strong> HT 重甲 → 优先 AP/APCR 打弱点；LT/SPG 脆皮 → HE 满伤或 AP 稳穿</li>
+            <li><strong>角度如何？</strong> 正面垂直 → APCR；倾斜/摆角度 → AP（转正 5° 优势）；极大角度 → HEAT（85° 跳弹角）</li>
+            <li><strong>距离多少？</strong> 200m 以内 → AP/APCR 均可；300m+ → APCR 衰减严重，HEAT 恒定可选</li>
+            <li><strong>有间隙装甲吗？</strong> 裙甲/履带 → 不用 HEAT/HESH；垂直弱点 → APCR 速攻</li>
+            <li><strong>你是什么口径？</strong> 大管子（152mm+）→ AP 碾压侧面和顶盖；小口径 → 精确瞄弱点</li>
+        </ol>
+    </div>
+
+    <hr>
+    <div class="footer">
+        <p>
+            <a href="../index.html">← 返回首页</a> &nbsp;·&nbsp;
+            <a href="02-armor.html">← 上一板块：装甲机制</a> &nbsp;·&nbsp;
+            下一板块：乘员系统（待开发）
+        </p>
+        <p style="margin-top:0.5rem;">内容整理自 <a href="https://wiki.wargaming.net/en/Battle_Mechanics">wiki.wargaming.net Battle Mechanics</a></p>
+    </div>
+</div>
+
+<script>
+(function() {
+    var root = document.documentElement;
+    var lightBtn = document.getElementById('lightBtn');
+    var darkBtn = document.getElementById('darkBtn');
+    function setTheme(name) {
+        if (name === 'dark') {
+            root.style.setProperty('--bg', 'var(--dark-bg)');
+            root.style.setProperty('--text', 'var(--dark-text)');
+            root.style.setProperty('--link', 'var(--dark-link)');
+            root.style.setProperty('--accent', 'var(--dark-accent)');
+            root.style.setProperty('--secondary', 'var(--dark-secondary)');
+            root.style.setProperty('--border', 'var(--dark-border)');
+            root.style.setProperty('--card-bg', 'var(--dark-card-bg)');
+            darkBtn.classList.add('active'); lightBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'dark');
+        } else {
+            root.style.setProperty('--bg', 'var(--light-bg)');
+            root.style.setProperty('--text', 'var(--light-text)');
+            root.style.setProperty('--link', 'var(--light-link)');
+            root.style.setProperty('--accent', 'var(--light-accent)');
+            root.style.setProperty('--secondary', 'var(--light-secondary)');
+            root.style.setProperty('--border', 'var(--light-border)');
+            root.style.setProperty('--card-bg', 'var(--light-card-bg)');
+            lightBtn.classList.add('active'); darkBtn.classList.remove('active');
+            localStorage.setItem('wot-theme', 'light');
+        }
+    }
+    var saved = localStorage.getItem('wot-theme');
+    setTheme(saved === 'dark' ? 'dark' : 'light');
+    lightBtn.addEventListener('click', function() { setTheme('light'); });
+    darkBtn.addEventListener('click', function() { setTheme('dark'); });
+})();
+</script>
+</body>
+</html>
