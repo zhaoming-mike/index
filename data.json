@@ -4,5 +4,11 @@
     "url": "https://zhaoming-mike.github.io/index/MD-reader/index.html",
     "icon": "📖",
     "description": "Markdown 阅读器"
+  },
+  {
+    "name": "WOT-Wiki-CN",
+    "url": "https://zhaoming-mike.github.io/index/wot-wiki-cn/index.html",
+    "icon": "👓",
+    "description": "坦克世界中文WIKI"
   }
 ]
